@@ -46,7 +46,14 @@ setup(name="covid-stats",
       cmdclass={'test': PyTest},
       
       # TODO: List of packages that this one depends upon:   
-      install_requires=['numpy', 'pandas', 'matplotlib', 'seaborn', 'pydlm', 'epyestim'],
+      install_requires=[
+          'numpy==1.20.1',
+          'pandas==1.2.3',
+          'matplotlib==3.3.4',
+          'seaborn==0.11.1',
+          'pydlm==0.1.1.11',
+          'epyestim==0.1'
+      ],
       # TODO: List executable scripts, provided by the package (this is just an example)
       entry_points={
         'console_scripts': 
