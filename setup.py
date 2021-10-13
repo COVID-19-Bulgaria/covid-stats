@@ -11,6 +11,7 @@ import sys
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
+
 # This is a plug-in for setuptools that will invoke py.test
 # when you run python setup.py test
 class PyTest(TestCommand):
@@ -24,17 +25,17 @@ class PyTest(TestCommand):
         sys.exit(pytest.main(self.test_args))
 
 
-version = "0.1"
+version = "0.2"
 
 setup(name="covid-stats",
       version=version,
       description="Charts and visualisations for the COVID-19 spread in Bulgaria",
       long_description=open("README.rst").read(),
-      classifiers=[ # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 1 - Planning',
-        'Programming Language :: Python'
+      classifiers=[  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+          'Development Status :: 1 - Planning',
+          'Programming Language :: Python'
       ],
-      keywords="covid,covid-19,coronavirus,sars-cov-2,Bulgaria", # Separate with spaces
+      keywords="covid,covid-19,coronavirus,sars-cov-2,Bulgaria",  # Separate with spaces
       author="Veselin Stoyanov",
       author_email="me@vesko.dev",
       url="https://coronavirus-bulgaria.org",
@@ -44,19 +45,19 @@ setup(name="covid-stats",
       zip_safe=False,
       tests_require=['pytest'],
       cmdclass={'test': PyTest},
-      
+
       # TODO: List of packages that this one depends upon:   
       install_requires=[
-          'numpy==1.20.1',
-          'pandas==1.2.3',
-          'matplotlib==3.3.4',
-          'seaborn==0.11.1',
-          'pydlm==0.1.1.11',
-          'epyestim==0.1'
+          'numpy',
+          'pandas',
+          'matplotlib',
+          'seaborn',
+          'pydlm',
+          'epyestim'
       ],
       # TODO: List executable scripts, provided by the package (this is just an example)
       entry_points={
-        'console_scripts': 
-            ['covid_stats=covidstats:main']
+          'console_scripts':
+              ['covid_stats=covidstats:main']
       }
-)
+      )
