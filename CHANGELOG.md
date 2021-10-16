@@ -1,3 +1,8 @@
+Version 0.4
+-----------
+    - Added historical cases plot.
+    - Captioned all plots with generation date.
+
 Version 0.3
 -----------
     - Added daily positivity plot.

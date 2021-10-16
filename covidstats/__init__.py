@@ -12,6 +12,7 @@ import datetime as dt
 def main():
     plot.setup_sns()
 
+    date_cases_df = data.get_date_cases_df()
     week_cases_df = data.get_week_cases_df()
     date_diff_cases_df = data.get_date_diff_cases_df()
     active_cases_df = data.get_active_cases_df()
@@ -56,3 +57,7 @@ def main():
     date_positive_cases_percentage_plot = plot.generate_date_positive_cases_percentage_plot(
         date_positive_cases_percentage_df)
     plot.export_plot(date_positive_cases_percentage_plot, 'PositiveCasesPercentage')
+
+    # Historical cases plot
+    historical_cases_plot = plot.generate_combined_date_cases_plot(date_cases_df)
+    plot.export_plot(historical_cases_plot, 'HistoricalCases')

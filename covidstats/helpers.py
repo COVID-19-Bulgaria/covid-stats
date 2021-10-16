@@ -1,6 +1,7 @@
 import epyestim.covid19 as covid19
 import pydlm
 import numpy as np
+import datetime as dt
 
 
 def estimate_rt(df):
@@ -42,3 +43,9 @@ def predict_cases(reported_cases, predicted_rts):
                                                 1)[0])
 
     return predicted_cases
+
+
+def get_generation_date_text():
+    date = dt.date.today()
+
+    return date.strftime('Последна актуализация: %d.%m.%Y')

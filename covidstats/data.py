@@ -31,15 +31,26 @@ def get_active_cases_df():
     return active_cases_dataset
 
 
-def get_date_diff_cases_df():
+def get_date_cases_df():
     date_cases_dataset = pd.read_json(
-        'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateDiffCasesDataset.json')
+        'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateCasesDataset.json')
 
     for column in ['infected', 'cured', 'fatal', 'hospitalized', 'intensive_care', 'medical_staff', 'pcr_tests',
                    'antigen_tests', 'vaccinated']:
         date_cases_dataset[column] = date_cases_dataset[column].apply(pd.Series)
 
     return date_cases_dataset
+
+
+def get_date_diff_cases_df():
+    date_diff_cases_dataset = pd.read_json(
+        'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateDiffCasesDataset.json')
+
+    for column in ['infected', 'cured', 'fatal', 'hospitalized', 'intensive_care', 'medical_staff', 'pcr_tests',
+                   'antigen_tests', 'vaccinated']:
+        date_diff_cases_dataset[column] = date_diff_cases_dataset[column].apply(pd.Series)
+
+    return date_diff_cases_dataset
 
 
 def get_date_positive_cases_percentage_df():
