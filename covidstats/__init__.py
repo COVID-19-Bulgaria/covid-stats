@@ -16,6 +16,7 @@ def main():
     date_diff_cases_df = data.get_date_diff_cases_df()
     active_cases_df = data.get_active_cases_df()
     week_places_cases_df = data.get_week_places_cases_df()
+    date_positive_cases_percentage_df = data.get_date_positive_cases_percentage_df()
 
     # Weekly infected and cured cases plot
     infected_cured_week_cases_plot = plot.generate_week_cases_plot(
@@ -50,3 +51,8 @@ def main():
     # Active cases plot
     active_cases_plot = plot.generate_active_cases_plot(active_cases_df)
     plot.export_plot(active_cases_plot, 'ActiveCases')
+
+    # Daily positivity plot
+    date_positive_cases_percentage_plot = plot.generate_date_positive_cases_percentage_plot(
+        date_positive_cases_percentage_df)
+    plot.export_plot(date_positive_cases_percentage_plot, 'PositiveCasesPercentage')

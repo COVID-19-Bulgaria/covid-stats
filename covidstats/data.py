@@ -24,7 +24,8 @@ def get_week_places_cases_df():
 
 def get_active_cases_df():
     active_cases_dataset = pd.read_json(
-        'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateActiveCasesDataset.json')
+        'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateActiveCasesDataset.json'
+    )
     active_cases_dataset['active'] = active_cases_dataset['active'].apply(pd.Series)
 
     return active_cases_dataset
@@ -39,6 +40,14 @@ def get_date_diff_cases_df():
         date_cases_dataset[column] = date_cases_dataset[column].apply(pd.Series)
 
     return date_cases_dataset
+
+
+def get_date_positive_cases_percentage_df():
+    date_positive_cases_percentage_df = pd.read_json('https://raw.githubusercontent.com/COVID-19-Bulgaria/covid'
+                                                     '-database/master/Bulgaria/DatePositiveTestsDataset.json',
+                                                     orient='index')
+
+    return date_positive_cases_percentage_df
 
 
 def build_rts_df(predicted_rts, start_date):

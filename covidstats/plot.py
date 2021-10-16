@@ -190,6 +190,27 @@ def generate_weekly_14_days_prediction_plot_for_date(start_date, week_cases_df=d
     return generate_14_days_prediction_plot(week_cases_df, weekly_predicted_cases_df, rt_df, predicted_rts_df)
 
 
+def generate_date_positive_cases_percentage_plot(df=data.get_date_positive_cases_percentage_df()):
+    date_positive_cases_percentage_plot = sns.barplot(data=df, x=df.index, y='percentage', lw=0., color='#4e73df')
+    date_positive_cases_percentage_plot.set_title('Позитивност от направените тестове', fontweight='bold')
+    date_positive_cases_percentage_plot.set_xlabel('Седмица')
+    date_positive_cases_percentage_plot.set_ylabel('Процент')
+    plt.gcf().autofmt_xdate(rotation=45)
+
+    week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
+    date_positive_cases_percentage_plot.xaxis.set_minor_locator(week_locator)
+
+    ticks = np.arange(df.index.min(), df.index.max(), np.timedelta64(28, 'D'), dtype='datetime64')
+    ticks = list(map(lambda tick: pd.to_datetime(tick), ticks))
+    ticks_indexes = list(map(lambda tick: df.index.get_loc(tick), ticks))
+    ticks_labels = list(map(lambda tick: tick.strftime('%d.%m (%V)'), ticks))
+
+    date_positive_cases_percentage_plot.set_xticks(ticks_indexes)
+    date_positive_cases_percentage_plot.set_xticklabels(ticks_labels)
+
+    return date_positive_cases_percentage_plot
+
+
 def export_plot(ax, file_name):
     ax.figure.savefig(file_name + '.svg', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)
     ax.figure.clf()
