@@ -25,7 +25,7 @@ class PyTest(TestCommand):
         sys.exit(pytest.main(self.test_args))
 
 
-version = "0.4"
+version = "0.5"
 
 setup(name="covid-stats",
       version=version,

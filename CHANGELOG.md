@@ -1,3 +1,7 @@
+Version 0.5
+-----------
+    - Fixed inconsistent styling across different plots.
+
 Version 0.4
 -----------
     - Added historical cases plot.

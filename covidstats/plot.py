@@ -15,7 +15,8 @@ def setup_sns():
     custom_styles = {
         'xtick.bottom': True,
         'ytick.left': True,
-        'axes.titlepad': 20
+        'axes.titlepad': 20,
+        'axes.edgecolor': '.15'
     }
 
     color_palette = sns.color_palette('husl', 27)
@@ -25,7 +26,7 @@ def setup_sns():
 
 
 def set_plot_subtitle(ax, text):
-    ax.annotate(text, xy=(0.5, 0.929), xytext=(0.5, 0.929), xycoords='figure fraction', annotation_clip=False,
+    ax.annotate(text, xy=(0.5, 1.015), xytext=(0.5, 1.015), xycoords='axes fraction', annotation_clip=False,
                 ha='center', fontsize='small')
 
 
@@ -150,7 +151,7 @@ def generate_14_days_prediction_plot(
     lines, labels = cases_plot.get_legend_handles_labels()
     cases_plot.get_legend().remove()
 
-    with sns.axes_style('ticks'):
+    with sns.axes_style({'axes.grid': False}):
         common_ax = cases_plot.twinx()
         rt_plot = sns.lineplot(data=rt_df, x=rt_df.index, y='Q0.5', ax=common_ax, color='lightblue',
                                label='Моментно репродуктивно число (Rt)')
@@ -257,7 +258,7 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
     lines, labels = date_cases_plot.get_legend_handles_labels()
     date_cases_plot.get_legend().remove()
 
-    with sns.axes_style('ticks'):
+    with sns.axes_style({'axes.grid': False}):
         common_ax = date_cases_plot.twinx()
 
         fatal_plot = sns.lineplot(data=df, x=df.index, y='fatal', ax=common_ax, color='red',
