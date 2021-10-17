@@ -1,3 +1,7 @@
+Version 0.6
+-----------
+    - Fixed daily positivity plot ticks.
+
 Version 0.5
 -----------
     - Fixed inconsistent styling across different plots.
