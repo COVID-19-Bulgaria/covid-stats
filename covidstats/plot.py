@@ -21,7 +21,7 @@ def setup_sns():
 
     color_palette = sns.color_palette('husl', 27)
 
-    sns.set(rc={'figure.figsize': (11.7, 8.27)})
+    sns.set(rc={'figure.figsize': (12, 8)})
     sns.set_theme(style='whitegrid', palette=color_palette, color_codes=True, rc=custom_styles)
 
 
@@ -277,5 +277,6 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
 
 
 def export_plot(ax, file_name):
+    ax.figure.tight_layout()
     ax.figure.savefig(file_name + '.svg', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)
     ax.figure.clf()

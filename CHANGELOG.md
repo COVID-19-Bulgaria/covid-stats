@@ -1,3 +1,7 @@
+Version 0.7
+-----------
+    - Applied tight layout to keep plot proportions the same.
+
 Version 0.6
 -----------
     - Fixed daily positivity plot ticks.
