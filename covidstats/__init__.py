@@ -8,7 +8,7 @@ Licensed under Attribution-NonCommercial-ShareAlike 4.0 International.
 from covidstats import data, plot, locales
 import datetime as dt
 
-from locales import t
+from covidstats.locales import t
 
 
 def main():

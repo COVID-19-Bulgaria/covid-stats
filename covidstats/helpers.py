@@ -3,7 +3,7 @@ import pydlm
 import numpy as np
 import datetime as dt
 
-from locales import t
+from covidstats.locales import t
 
 
 def estimate_rt(df):
