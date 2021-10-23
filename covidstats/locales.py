@@ -13,5 +13,5 @@ def set_locale(locale):
 
 
 def t(key, **kwargs):
-    return i18n.t(key, kwargs)
+    return i18n.t(key, **kwargs)
 
