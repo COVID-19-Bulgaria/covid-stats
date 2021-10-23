@@ -1,3 +1,8 @@
+Version 1.0
+-----------
+    - Introduced i18n - added bg (Bulgarian) and en (English) locales.
+    - Generate all plots with the newly introduced locales.
+
 Version 0.7
 -----------
     - Applied tight layout to keep plot proportions the same.

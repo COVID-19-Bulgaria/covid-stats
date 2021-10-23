@@ -1,0 +1,47 @@
+bg:
+  plots:
+    common:
+      generation_date_subtitle: 'Последна актуализация: %d.%m.%Y'
+    week_cases_plot:
+      legend:
+        infected: 'Заразени'
+        cured: 'Излекувани'
+        fatal: 'Жертви'
+        hospitalized: 'Хоспитализирани'
+        intensive_care: 'Интензивни грижи'
+      title: 'Хронология на случаите по седмици'
+      x_label: 'Седмица'
+      y_label: 'Брой случаи'
+    active_cases_plot:
+      title: 'Активни случаи'
+      x_label: 'Седмица'
+      y_label: 'Брой случаи'
+    week_places_cases_plot:
+      title: 'Нови случаи по области'
+      x_label: 'Седмица'
+      y_label: 'Нови случаи (средно)'
+    14_days_forecast_plot:
+      legend:
+        cases: 'Отчетени случаи'
+        cases_r_increase: 'Предсказани случаи (Rt* + 5%)'
+        cases_r_retention: 'Предсказани случаи (Rt*)'
+        cases_r_decline: 'Предсказани случаи (Rt* - 5%)'
+        rt: 'Моментно репродуктивно число (Rt)'
+        rt_forecast: 'Предсказано моментно репродуктивно число (Rt*)'
+      title: '14-дневна прогноза на заболеваемостта'
+      x_label: 'Седмица'
+      y_label: 'Брой случаи'
+      y_right_label: 'Моментно репродуктивно число, Rt'
+    positive_cases_percentage_plot:
+      title: 'Позитивност от направените тестове'
+      x_label: 'Седмица'
+      y_label: 'Процент'
+    date_cases_plot:
+      legend:
+        infected: 'Заразени'
+        cured: 'Излекувани'
+        fatal: 'Жертви'
+      title: 'Хронология на развитието на заразата'
+      x_label: 'Дата'
+      y_label: 'Брой случаи'
+      y_fatal_label: 'Брой жертви'

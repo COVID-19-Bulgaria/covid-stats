@@ -1,0 +1,47 @@
+en:
+  plots:
+    common:
+      generation_date_subtitle: 'Last update: %d.%m.%Y'
+    week_cases_plot:
+      legend:
+        infected: 'Infected'
+        cured: 'Cured'
+        fatal: 'Fatal'
+        hospitalized: 'Hospitalized'
+        intensive_care: 'Intensive care'
+      title: 'Disease timeline by week'
+      x_label: 'Week'
+      y_label: 'Cases'
+    active_cases_plot:
+      title: 'Active cases'
+      x_label: 'Week'
+      y_label: 'Cases'
+    week_places_cases_plot:
+      title: 'New cases by region'
+      x_label: 'Week'
+      y_label: 'New cases (average)'
+    14_days_forecast_plot:
+      legend:
+        cases: 'Recorded cases'
+        cases_r_increase: 'Cases forecast (Rt* + 5%)'
+        cases_r_retention: 'Cases forecast (Rt*)'
+        cases_r_decline: 'Cases forecast (Rt* - 5%)'
+        rt: 'Effective reproduction number (Rt)'
+        rt_forecast: 'Effective reproduction number forecast (Rt*)'
+      title: '14-days incidence forecast'
+      x_label: 'Week'
+      y_label: 'Cases'
+      y_right_label: 'Effective reproduction number, Rt'
+    positive_cases_percentage_plot:
+      title: 'Tests positivity'
+      x_label: 'Week'
+      y_label: 'Percent'
+    date_cases_plot:
+      legend:
+        infected: 'Infected'
+        cured: 'Cured'
+        fatal: 'Fatal'
+      title: 'Disease timeline'
+      x_label: 'Date'
+      y_label: 'Cases'
+      y_fatal_label: 'Fatalities'

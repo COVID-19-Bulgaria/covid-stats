@@ -25,7 +25,7 @@ class PyTest(TestCommand):
         sys.exit(pytest.main(self.test_args))
 
 
-version = "0.7"
+version = "1.0"
 
 setup(name="covid-stats",
       version=version,
@@ -53,7 +53,8 @@ setup(name="covid-stats",
           'matplotlib',
           'seaborn',
           'pydlm',
-          'epyestim'
+          'epyestim',
+          'python-i18n[YAML]'
       ],
       # TODO: List executable scripts, provided by the package (this is just an example)
       entry_points={

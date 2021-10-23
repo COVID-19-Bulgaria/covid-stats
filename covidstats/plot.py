@@ -9,6 +9,7 @@ import datetime as dt
 import random
 
 from covidstats import data, helpers
+from covidstats.locales import t
 
 
 def setup_sns():
@@ -35,16 +36,19 @@ def generate_week_cases_plot(
         value_vars=['infected', 'cured', 'fatal'],
         hue_order=['infected', 'cured', 'fatal'],
         palette=['orange', 'green', 'red'],
-        legend=['Заразени', 'Излекувани', 'Жертви']
+        legend=[
+            t('plots.week_cases_plot.legend.infected'),
+            t('plots.week_cases_plot.legend.cured'),
+            t('plots.week_cases_plot.legend.fatal')]
 ):
     plot_df = pd.melt(df, id_vars=['date'], value_vars=value_vars).dropna()
 
     week_cases_plot = sns.lineplot(x='date', y='value', hue='variable', hue_order=hue_order, palette=palette,
                                    data=plot_df)
-    week_cases_plot.set_title('Хронология на случаите по седмици', fontweight='bold')
+    week_cases_plot.set_title(t('plots.week_cases_plot.title'), fontweight='bold')
     set_plot_subtitle(week_cases_plot, helpers.get_generation_date_text())
-    week_cases_plot.set_xlabel('Седмица')
-    week_cases_plot.set_ylabel('Брой случаи')
+    week_cases_plot.set_xlabel(t('plots.week_cases_plot.x_label'))
+    week_cases_plot.set_ylabel(t('plots.week_cases_plot.y_label'))
     week_cases_plot.legend(labels=legend)
     plt.gcf().autofmt_xdate(rotation=45)
 
@@ -61,10 +65,10 @@ def generate_week_cases_plot(
 
 def generate_active_cases_plot(df=data.get_active_cases_df()):
     active_cases_plot = sns.lineplot(data=df, x=df.index, y='active', color='orange', legend=False)
-    active_cases_plot.set_title('Активни случаи', fontweight='bold')
+    active_cases_plot.set_title(t('plots.active_cases_plot.title'), fontweight='bold')
     set_plot_subtitle(active_cases_plot, helpers.get_generation_date_text())
-    active_cases_plot.set_xlabel('Седмица')
-    active_cases_plot.set_ylabel('Брой случаи')
+    active_cases_plot.set_xlabel(t('plots.active_cases_plot.x_label'))
+    active_cases_plot.set_ylabel(t('plots.active_cases_plot.y_label'))
     active_cases_plot.fill_between(df.index, df['active'], alpha=0.2, color='orange')
     plt.gcf().autofmt_xdate(rotation=45)
 
@@ -90,10 +94,10 @@ def generate_week_places_cases_plot(df=data.get_week_places_cases_df()):
 
     week_places_cases_plot = sns.lineplot(data=df, x='date', y='infected_avg', hue='place', hue_order=draw_order,
                                           palette=draw_colors_order)
-    week_places_cases_plot.set_title('Нови случаи по области', fontweight='bold')
+    week_places_cases_plot.set_title(t('plots.week_places_cases_plot.title'), fontweight='bold')
     set_plot_subtitle(week_places_cases_plot, helpers.get_generation_date_text())
-    week_places_cases_plot.set_xlabel('Седмица')
-    week_places_cases_plot.set_ylabel('Нови случаи (средно)')
+    week_places_cases_plot.set_xlabel(t('plots.week_places_cases_plot.x_label'))
+    week_places_cases_plot.set_ylabel(t('plots.week_places_cases_plot.y_label'))
     plt.gcf().autofmt_xdate(rotation=45)
 
     week_places_cases_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
@@ -119,16 +123,16 @@ def generate_14_days_prediction_plot(
         predicted_rt_df):
     cases_plot = sns.lineplot(data=cases_df,
                               x=cases_df.date.append(predicted_cases_df.index.to_series(), ignore_index=True),
-                              y='infected', color='orange', label='Отчетени случаи')
+                              y='infected', color='orange', label=t('plots.14_days_forecast_plot.legend.cases'))
     predicted_cases_r_increase_plot = sns.lineplot(data=predicted_cases_df, x=predicted_cases_df.index,
                                                    y='increase_cases', color='red',
-                                                   label='Предсказани случаи (Rt* + 5%)')
+                                                   label=t('plots.14_days_forecast_plot.legend.cases_r_increase'))
     predicted_cases_r_retention_plot = sns.lineplot(data=predicted_cases_df, x=predicted_cases_df.index,
                                                     y='predicted_cases', color='purple',
-                                                    label='Предсказани случаи (Rt*)')
+                                                    label=t('plots.14_days_forecast_plot.legend.cases_r_retention'))
     predicted_cases_r_decline_plot = sns.lineplot(data=predicted_cases_df, x=predicted_cases_df.index,
                                                   y='decline_cases', color='olive',
-                                                  label='Предсказани случаи (Rt* - 5%)')
+                                                  label=t('plots.14_days_forecast_plot.legend.cases_r_decline'))
 
     cases_plot.fill_between(predicted_cases_df.index,
                             predicted_cases_df['increase_cases'],
@@ -140,10 +144,10 @@ def generate_14_days_prediction_plot(
                             predicted_cases_df['decline_cases'],
                             color='olive', alpha=0.2)
 
-    cases_plot.set_title('14-дневна прогноза на заболеваемостта', fontweight='bold')
+    cases_plot.set_title(t('plots.14_days_forecast_plot.title'), fontweight='bold')
     set_plot_subtitle(cases_plot, helpers.get_generation_date_text())
-    cases_plot.set_xlabel('Седмица')
-    cases_plot.set_ylabel('Брой случаи')
+    cases_plot.set_xlabel(t('plots.14_days_forecast_plot.x_label'))
+    cases_plot.set_ylabel(t('plots.14_days_forecast_plot.y_label'))
     plt.gcf().autofmt_xdate(rotation=45)
 
     cases_plot.yaxis.set_major_locator(ticker.MaxNLocator(4))
@@ -154,8 +158,8 @@ def generate_14_days_prediction_plot(
     with sns.axes_style({'axes.grid': False}):
         common_ax = cases_plot.twinx()
         rt_plot = sns.lineplot(data=rt_df, x=rt_df.index, y='Q0.5', ax=common_ax, color='lightblue',
-                               label='Моментно репродуктивно число (Rt)')
-        rt_plot.set_ylabel('Моментно репродуктивно число, Rt', rotation=-90, labelpad=20)
+                               label=t('plots.14_days_forecast_plot.legend.rt'))
+        rt_plot.set_ylabel(t('plots.14_days_forecast_plot.y_right_label'), rotation=-90, labelpad=20)
         rt_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
 
         rt_plot.fill_between(rt_df.index,
@@ -170,7 +174,7 @@ def generate_14_days_prediction_plot(
 
         rt_prediction_retention_plot = sns.lineplot(data=predicted_rt_df, x=predicted_rt_df.index, y='predicted_rt',
                                                     ax=common_ax, color='darkblue',
-                                                    label='Предсказано моментно репродуктивно число (Rt*)')
+                                                    label=t('plots.14_days_forecast_plot.legend.rt_forecast'))
         rt_prediction_retention_plot.fill_between(predicted_rt_df.index,
                                                   predicted_rt_df['decline_rt'],
                                                   predicted_rt_df['increase_rt'],
@@ -203,10 +207,10 @@ def generate_date_positive_cases_percentage_plot(df=data.get_date_positive_cases
     df['formatted_date'] = list(map(lambda date: date.strftime('%d.%m (%V)'), df.index))
     date_positive_cases_percentage_plot = sns.barplot(data=df, x='formatted_date', y='percentage', lw=0.,
                                                       color='#4e73df', ci=None)
-    date_positive_cases_percentage_plot.set_title('Позитивност от направените тестове', fontweight='bold')
+    date_positive_cases_percentage_plot.set_title(t('plots.positive_cases_percentage_plot.title'), fontweight='bold')
     set_plot_subtitle(date_positive_cases_percentage_plot, helpers.get_generation_date_text())
-    date_positive_cases_percentage_plot.set_xlabel('Седмица')
-    date_positive_cases_percentage_plot.set_ylabel('Процент')
+    date_positive_cases_percentage_plot.set_xlabel(t('plots.positive_cases_percentage_plot.x_label'))
+    date_positive_cases_percentage_plot.set_ylabel(t('plots.positive_cases_percentage_plot.y_label'))
     plt.gcf().autofmt_xdate(rotation=45)
 
     minor_week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
@@ -223,17 +227,21 @@ def generate_date_cases_plot(
         value_vars=['infected', 'cured', 'fatal'],
         hue_order=['infected', 'cured', 'fatal'],
         palette=['orange', 'green', 'red'],
-        legend=['Заразени', 'Излекувани', 'Жертви']
+        legend=[
+            t('plots.date_cases_plot.legend.infected'),
+            t('plots.date_cases_plot.legend.cured'),
+            t('plots.date_cases_plot.legend.fatal')
+        ]
 ):
     df['date'] = df.index
     plot_df = pd.melt(df, id_vars=['date'], value_vars=value_vars).dropna()
 
     date_cases_plot = sns.lineplot(x='date', y='value', hue='variable', hue_order=hue_order, palette=palette,
                                    data=plot_df)
-    date_cases_plot.set_title('Хронология на развитието на заразата', fontweight='bold')
+    date_cases_plot.set_title(t('plots.date_cases_plot.title'), fontweight='bold')
     set_plot_subtitle(date_cases_plot, helpers.get_generation_date_text())
-    date_cases_plot.set_xlabel('Дата')
-    date_cases_plot.set_ylabel('Брой случаи')
+    date_cases_plot.set_xlabel(t('plots.date_cases_plot.x_label'))
+    date_cases_plot.set_ylabel(t('plots.date_cases_plot.y_label'))
     date_cases_plot.legend(labels=legend)
     plt.gcf().autofmt_xdate(rotation=45)
 
@@ -250,7 +258,11 @@ def generate_date_cases_plot(
 
 def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
     date_cases_plot = generate_date_cases_plot(df=df, value_vars=['infected', 'cured'], hue_order=['infected', 'cured'],
-                                               palette=['orange', 'green'], legend=['Заразени', 'Излекувани'])
+                                               palette=['orange', 'green'],
+                                               legend=[
+                                                 t('plots.date_cases_plot.legend.infected'),
+                                                 t('plots.date_cases_plot.legend.cured'),
+                                               ])
 
     lines, labels = date_cases_plot.get_legend_handles_labels()
     date_cases_plot.get_legend().remove()
@@ -259,8 +271,8 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
         common_ax = date_cases_plot.twinx()
 
         fatal_plot = sns.lineplot(data=df, x=df.index, y='fatal', ax=common_ax, color='red',
-                                  label='Жертви')
-        fatal_plot.set_ylabel('Брой жертви', rotation=-90, labelpad=20)
+                                  label=t('plots.date_cases_plot.legend.fatal'))
+        fatal_plot.set_ylabel(t('plots.date_cases_plot.y_fatal_label'), rotation=-90, labelpad=20)
 
         fatal_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
 
@@ -271,7 +283,11 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
         fatal_plot.set_xticks(ticks)
 
         lines2, labels2 = common_ax.get_legend_handles_labels()
-        fatal_plot.legend(lines + lines2, ['Заразени', 'Излекувани', 'Жертви'])
+        fatal_plot.legend(lines + lines2, [
+            t('plots.date_cases_plot.legend.infected'),
+            t('plots.date_cases_plot.legend.cured'),
+            t('plots.date_cases_plot.legend.fatal')
+        ])
 
     return date_cases_plot
 

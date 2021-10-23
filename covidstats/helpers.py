@@ -3,6 +3,8 @@ import pydlm
 import numpy as np
 import datetime as dt
 
+from locales import t
+
 
 def estimate_rt(df):
     rt_df = covid19.r_covid(df, smoothing_window=21, r_window_size=7, quantiles=(0.05, 0.5, 0.95), auto_cutoff=False)
@@ -48,4 +50,4 @@ def predict_cases(reported_cases, predicted_rts):
 def get_generation_date_text():
     date = dt.date.today()
 
-    return date.strftime('Последна актуализация: %d.%m.%Y')
+    return date.strftime(t('plots.common.generation_date_subtitle'))
