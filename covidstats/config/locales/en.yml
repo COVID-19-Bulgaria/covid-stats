@@ -45,3 +45,19 @@ en:
       x_label: 'Date'
       y_label: 'Cases'
       y_fatal_label: 'Fatalities'
+    tests_positivity_plot:
+      legend:
+        pcr_tests: 'PCR tests'
+        positive_pcr_tests: 'Positive PCR tests'
+        antigen_tests: 'Antigen tests'
+        positive_antigen_tests: 'Positive antigen tests'
+        tests: 'Total tests'
+        positive_tests: 'Positive tests'
+        positive_tests_percentage: 'Positive tests percentage'
+      title:
+        pcr: 'PCR tests positivity'
+        antigen: 'Antigen tests positivity'
+        pcr_antigen: 'Tests positivity (PCR + Antigen)'
+      x_label: 'Date'
+      y_label: 'Tests'
+      y_right_label: 'Percentage'

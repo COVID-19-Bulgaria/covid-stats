@@ -21,17 +21,18 @@ def main():
     date_diff_cases_df = data.get_date_diff_cases_df()
     active_cases_df = data.get_active_cases_df()
     week_places_cases_df = data.get_week_places_cases_df()
-    date_positive_cases_percentage_df = data.get_date_positive_cases_percentage_df()
+    date_positive_tests_df = data.get_date_positive_tests_df()
+    weekly_positive_tests_df = data.build_weekly_positive_tests_df(date_positive_tests_df)
 
     generate_plots('bg', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_cases_percentage_df)
+                   date_positive_tests_df, weekly_positive_tests_df)
 
     generate_plots('en', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_cases_percentage_df)
+                   date_positive_tests_df, weekly_positive_tests_df)
 
 
 def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_cases_percentage_df):
+                   date_positive_cases_percentage_df, weekly_positive_tests_df):
     locales.set_locale(locale)
 
     # Weekly infected and cured cases plot
@@ -72,11 +73,59 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
     active_cases_plot = plot.generate_active_cases_plot(active_cases_df)
     plot.export_plot(active_cases_plot, '%s/ActiveCases' % locale)
 
-    # Daily positivity plot
-    date_positive_cases_percentage_plot = plot.generate_date_positive_cases_percentage_plot(
-        date_positive_cases_percentage_df)
-    plot.export_plot(date_positive_cases_percentage_plot, '%s/PositiveCasesPercentage' % locale)
-
     # Historical cases plot
     historical_cases_plot = plot.generate_combined_date_cases_plot(date_cases_df)
     plot.export_plot(historical_cases_plot, '%s/HistoricalCases' % locale)
+
+    # Daily positivity plot
+    date_tests_positivity_plot = plot.generate_date_positive_cases_percentage_plot(
+        date_positive_cases_percentage_df)
+    plot.export_plot(date_tests_positivity_plot, '%s/DateTestsPositivity' % locale)
+
+    # Weekly positivity plot
+    weekly_tests_positivity_plot = plot.generate_tests_positivity_plot(
+        df=weekly_positive_tests_df,
+        value_vars=['total_tests', 'total_positive_tests'],
+        hue_order=['total_tests', 'total_positive_tests'],
+        main_palette=['orange', 'red'],
+        main_legend=[
+            t('plots.tests_positivity_plot.legend.tests'),
+            t('plots.tests_positivity_plot.legend.positive_tests')
+        ],
+        secondary_var='positive_percentage',
+        secondary_legend=t('plots.tests_positivity_plot.legend.positive_tests_percentage'),
+        title=t('plots.tests_positivity_plot.title.pcr_antigen')
+    )
+    plot.export_plot(weekly_tests_positivity_plot, '%s/WeeklyTestsPositivity' % locale)
+
+    # Weekly PCR positivity plot
+    weekly_pcr_tests_positivity_plot = plot.generate_tests_positivity_plot(
+        df=weekly_positive_tests_df,
+        value_vars=['pcr_tests', 'positive_pcr_tests'],
+        hue_order=['pcr_tests', 'positive_pcr_tests'],
+        main_palette=['orange', 'red'],
+        main_legend=[
+            t('plots.tests_positivity_plot.legend.pcr_tests'),
+            t('plots.tests_positivity_plot.legend.positive_pcr_tests')
+        ],
+        secondary_var='pcr_positive_percentage',
+        secondary_legend=t('plots.tests_positivity_plot.legend.positive_tests_percentage'),
+        title=t('plots.tests_positivity_plot.title.pcr')
+    )
+    plot.export_plot(weekly_pcr_tests_positivity_plot, '%s/WeeklyPCRTestsPositivity' % locale)
+
+    # Weekly antigen positivity plot
+    weekly_antigen_tests_positivity_plot = plot.generate_tests_positivity_plot(
+        df=weekly_positive_tests_df,
+        value_vars=['antigen_tests', 'positive_antigen_tests'],
+        hue_order=['antigen_tests', 'positive_antigen_tests'],
+        main_palette=['orange', 'red'],
+        main_legend=[
+            t('plots.tests_positivity_plot.legend.antigen_tests'),
+            t('plots.tests_positivity_plot.legend.positive_antigen_tests')
+        ],
+        secondary_var='antigen_positive_percentage',
+        secondary_legend=t('plots.tests_positivity_plot.legend.positive_tests_percentage'),
+        title=t('plots.tests_positivity_plot.title.antigen')
+    )
+    plot.export_plot(weekly_antigen_tests_positivity_plot, '%s/WeeklyAntigenTestsPositivity' % locale)

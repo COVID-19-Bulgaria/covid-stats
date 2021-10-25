@@ -1,3 +1,7 @@
+Version 1.1
+-----------
+    - Introduced weekly positive tests percentage charts.
+
 Version 1.0
 -----------
     - Introduced i18n - added bg (Bulgarian) and en (English) locales.

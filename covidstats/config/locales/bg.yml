@@ -45,3 +45,19 @@ bg:
       x_label: 'Дата'
       y_label: 'Брой случаи'
       y_fatal_label: 'Брой жертви'
+    tests_positivity_plot:
+      legend:
+        pcr_tests: 'PCR тестове'
+        positive_pcr_tests: 'Положителни PCR тестове'
+        antigen_tests: 'Антигенни тестове'
+        positive_antigen_tests: 'Положителни антигенни тестове'
+        tests: 'Брой тестове'
+        positive_tests: 'Положителни тестове'
+        positive_tests_percentage: 'Процент положителни тестове'
+      title:
+        pcr: 'Позитивност на PCR тестовете'
+        antigen: 'Позитивност на антигенните тестове'
+        pcr_antigen: 'Позитивност на направените тестове (PCR + антигенни)'
+      x_label: 'Дата'
+      y_label: 'Брой тестове'
+      y_right_label: 'Процент'

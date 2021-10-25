@@ -53,12 +53,11 @@ def get_date_diff_cases_df():
     return date_diff_cases_dataset
 
 
-def get_date_positive_cases_percentage_df():
-    date_positive_cases_percentage_df = pd.read_json('https://raw.githubusercontent.com/COVID-19-Bulgaria/covid'
-                                                     '-database/master/Bulgaria/DatePositiveTestsDataset.json',
-                                                     orient='index')
+def get_date_positive_tests_df():
+    date_positive_tests_df = pd.read_csv('https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/'
+                                         'Bulgaria/DatePositiveTestsDataset.csv', parse_dates=['date'])
 
-    return date_positive_cases_percentage_df
+    return date_positive_tests_df
 
 
 def build_rts_df(predicted_rts, start_date):
@@ -115,3 +114,23 @@ def build_weekly_predicted_cases_df(week_cases_df, predicted_cases_df, start_dat
             df.loc[df.index == end_of_week_date, ['decline_cases']] = average_week_cases
 
     return df
+
+
+def build_weekly_positive_tests_df(date_positive_tests_df=get_date_positive_tests_df()):
+    weekly_positive_tests_df = date_positive_tests_df.groupby(pd.Grouper(key='date', freq='W')).agg({
+        'pcr_tests': 'sum',
+        'antigen_tests': 'sum',
+        'positive_percentage': 'mean',
+        'positive_pcr_tests': 'sum',
+        'pcr_positive_percentage': 'mean',
+        'positive_antigen_tests': 'sum',
+        'antigen_positive_percentage': 'mean'
+    })
+
+    weekly_positive_tests_df['date'] = weekly_positive_tests_df.index
+    weekly_positive_tests_df['total_tests'] = weekly_positive_tests_df['pcr_tests'] \
+                                              + weekly_positive_tests_df['antigen_tests']
+    weekly_positive_tests_df['total_positive_tests'] = weekly_positive_tests_df['positive_pcr_tests'] \
+                                                       + weekly_positive_tests_df['positive_antigen_tests']
+
+    return weekly_positive_tests_df

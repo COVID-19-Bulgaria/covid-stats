@@ -203,9 +203,9 @@ def generate_weekly_14_days_prediction_plot_for_date(start_date, week_cases_df=d
     return generate_14_days_prediction_plot(week_cases_df, weekly_predicted_cases_df, rt_df, predicted_rts_df)
 
 
-def generate_date_positive_cases_percentage_plot(df=data.get_date_positive_cases_percentage_df()):
-    df['formatted_date'] = list(map(lambda date: date.strftime('%d.%m (%V)'), df.index))
-    date_positive_cases_percentage_plot = sns.barplot(data=df, x='formatted_date', y='percentage', lw=0.,
+def generate_date_positive_cases_percentage_plot(df=data.get_date_positive_tests_df()):
+    df['formatted_date'] = list(map(lambda date: date.strftime('%d.%m (%V)'), df['date']))
+    date_positive_cases_percentage_plot = sns.barplot(data=df, x='formatted_date', y='positive_percentage', lw=0.,
                                                       color='#4e73df', ci=None)
     date_positive_cases_percentage_plot.set_title(t('plots.positive_cases_percentage_plot.title'), fontweight='bold')
     set_plot_subtitle(date_positive_cases_percentage_plot, helpers.get_generation_date_text())
@@ -220,6 +220,56 @@ def generate_date_positive_cases_percentage_plot(df=data.get_date_positive_cases
     date_positive_cases_percentage_plot.xaxis.set_major_locator(major_week_locator)
 
     return date_positive_cases_percentage_plot
+
+
+def generate_tests_positivity_plot(
+        df=data.get_date_positive_tests_df(),
+        value_vars=['pcr_tests', 'positive_pcr_tests'],
+        hue_order=['pcr_tests', 'positive_pcr_tests'],
+        main_palette=['orange', 'red'],
+        main_legend=[
+            t('plots.tests_positivity_plot.legend.pcr_tests'),
+            t('plots.tests_positivity_plot.legend.positive_pcr_tests')
+        ],
+        secondary_var='pcr_positive_percentage',
+        secondary_legend=t('plots.tests_positivity_plot.legend.positive_tests_percentage'),
+        title=t('plots.tests_positivity_plot.title.pcr')
+):
+    plot_df = pd.melt(df, id_vars=['date'], value_vars=value_vars).dropna()
+
+    date_tests_plot = sns.lineplot(x='date', y='value', hue='variable', hue_order=hue_order, palette=main_palette,
+                                   data=plot_df)
+    date_tests_plot.set_title(title, fontweight='bold')
+    date_tests_plot.set_xlabel(t('plots.tests_positivity_plot.x_label'))
+    date_tests_plot.set_ylabel(t('plots.tests_positivity_plot.y_label'))
+    date_tests_plot.legend(labels=main_legend)
+    plt.gcf().autofmt_xdate(rotation=45)
+
+    set_plot_subtitle(date_tests_plot, helpers.get_generation_date_text())
+
+    lines, labels = date_tests_plot.get_legend_handles_labels()
+    date_tests_plot.get_legend().remove()
+
+    with sns.axes_style({'axes.grid': False}):
+        common_ax = date_tests_plot.twinx()
+
+        positivity_plot = sns.lineplot(data=df, x=df.index, y=secondary_var, ax=common_ax, color='blue',
+                                       linestyle='dotted',
+                                       label=secondary_legend)
+        positivity_plot.set_ylabel(t('plots.tests_positivity_plot.y_right_label'), rotation=-90, labelpad=20)
+
+        positivity_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
+
+        week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
+        positivity_plot.xaxis.set_minor_locator(week_locator)
+
+        ticks = np.arange(df['date'].min(), df['date'].max(), np.timedelta64(28, 'D'), dtype='datetime64')
+        positivity_plot.set_xticks(ticks)
+
+        lines2, labels2 = common_ax.get_legend_handles_labels()
+        positivity_plot.legend(lines + lines2, main_legend + [secondary_legend])
+
+    return date_tests_plot
 
 
 def generate_date_cases_plot(
