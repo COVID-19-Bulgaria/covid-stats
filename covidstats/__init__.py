@@ -116,7 +116,7 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
 
     # Weekly antigen positivity plot
     weekly_antigen_tests_positivity_plot = plot.generate_tests_positivity_plot(
-        df=weekly_positive_tests_df,
+        df=weekly_positive_tests_df[weekly_positive_tests_df.antigen_positive_percentage.notnull()],
         value_vars=['antigen_tests', 'positive_antigen_tests'],
         hue_order=['antigen_tests', 'positive_antigen_tests'],
         main_palette=['orange', 'red'],

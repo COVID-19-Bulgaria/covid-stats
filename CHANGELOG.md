@@ -1,3 +1,7 @@
+Version 1.2
+-----------
+    - Fix antigen tests positivity plot data starting point.
+
 Version 1.1
 -----------
     - Introduced weekly positive tests percentage charts.
