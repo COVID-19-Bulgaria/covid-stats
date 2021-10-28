@@ -42,6 +42,22 @@ def get_date_cases_df():
     return date_cases_dataset
 
 
+def get_date_cases_age_df():
+    date_cases_age_df = pd.read_csv('https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/'
+                                    'Bulgaria/CasesAgeDataset.csv', parse_dates=['date'])
+
+    return date_cases_age_df
+
+
+def build_date_diff_cases_age_df(df=get_date_cases_age_df()):
+    date_diff_cases_age_df = pd.DataFrame({'date': df['date']})
+    for column in ['group_0_19', 'group_20_29', 'group_30_39', 'group_40_49', 'group_50_59', 'group_60_69',
+                   'group_70_79', 'group_80_89', 'group_90']:
+        date_diff_cases_age_df[column] = df[column].diff()
+
+    return date_diff_cases_age_df.dropna()
+
+
 def get_date_diff_cases_df():
     date_diff_cases_dataset = pd.read_json(
         'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateDiffCasesDataset.json')

@@ -1,3 +1,7 @@
+Version 1.4
+-----------
+    - Added date cases age and week cases age plots
+
 Version 1.3
 -----------
     - Added rolling biweekly places cases plot.

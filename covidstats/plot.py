@@ -31,6 +31,12 @@ def set_plot_subtitle(ax, text):
                 ha='center', fontsize='small')
 
 
+def get_label_for_line(line):
+    legend = line.axes.get_legend()
+    index = line.axes.get_lines().index(line)
+    return legend.texts[index].get_text()
+
+
 def generate_week_cases_plot(
         df=data.get_week_cases_df(),
         value_vars=['infected', 'cured', 'fatal'],
@@ -370,7 +376,7 @@ def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweek
 
     plt.subplots_adjust(top=0.9)
     plt.suptitle(t('plots.rolling_biweekly_places_cases_facet_plot.title'), fontweight='bold')
-    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.96), xytext=(0.5, 0.96),
+    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.965), xytext=(0.5, 0.965),
                  xycoords='figure fraction', annotation_clip=False,
                  ha='center', fontsize='small')
 
@@ -410,6 +416,55 @@ def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweek
                                                 bbox_to_anchor=(0.5, -0.15), frameon=False)
 
     return week_places_cases_facets_plot
+
+
+def generate_cases_age_plot(
+        df=data.get_date_cases_age_df(),
+        value_vars=['group_0_19', 'group_20_29', 'group_30_39', 'group_40_49', 'group_50_59', 'group_60_69',
+                    'group_70_79', 'group_80_89', 'group_90'],
+        legend=['0-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '90+'],
+        translation_key='cases_age_plot'
+):
+    plot_df = pd.melt(df, id_vars=['date'], value_vars=value_vars)
+
+    week_cases_age_plot = sns.lineplot(
+        data=plot_df,
+        x='date', hue='variable', y='value',
+        palette=sns.color_palette('Paired', n_colors=len(value_vars))
+    )
+
+    week_cases_age_plot.set_title(t('plots.%s.title' % translation_key), fontweight='bold')
+    set_plot_subtitle(week_cases_age_plot, helpers.get_generation_date_text())
+    week_cases_age_plot.set_xlabel(t('plots.%s.x_label' % translation_key))
+    week_cases_age_plot.set_ylabel(t('plots.%s.y_label' % translation_key))
+    week_cases_age_plot.legend(labels=legend)
+    plt.gcf().autofmt_xdate(rotation=45)
+
+    week_cases_age_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
+
+    week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
+    week_cases_age_plot.xaxis.set_minor_locator(week_locator)
+
+    ticks = np.arange(plot_df['date'].min(), plot_df['date'].max(), np.timedelta64(28, 'D'), dtype='datetime64')
+    week_cases_age_plot.set_xticks(ticks)
+
+    for line in week_cases_age_plot.lines:
+        x = line.get_xdata()
+        y = line.get_ydata()
+        if len(y) > 0:
+            week_cases_age_plot.annotate(text='%s (%d)' % (get_label_for_line(line), round(y[-1])), xy=(x[-1], y[-1]),
+                                         xytext=(35, 0), xycoords='data', textcoords='offset points',
+                                         ha='left', va='center', color=line.get_color(),
+                                         arrowprops={'arrowstyle': '->', 'color': line.get_color()})
+
+    return week_cases_age_plot
+
+
+def generate_week_cases_age_plot(df=data.build_date_diff_cases_age_df()):
+    plot_df = df.groupby(pd.Grouper(key='date', freq='W')).mean()
+    plot_df['date'] = plot_df.index
+
+    return generate_cases_age_plot(df=plot_df, translation_key='week_cases_age_plot')
 
 
 def export_plot(ax, file_name):

@@ -24,16 +24,21 @@ def main():
     date_positive_tests_df = data.get_date_positive_tests_df()
     weekly_positive_tests_df = data.build_weekly_positive_tests_df(date_positive_tests_df)
     rolling_biweekly_places_cases_df = data.get_rolling_biweekly_places_cases_df()
+    date_cases_age_df = data.get_date_cases_age_df()
+    date_diff_cases_age_df = data.build_date_diff_cases_age_df(date_cases_age_df)
 
     generate_plots('bg', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df)
+                   date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df,
+                   date_cases_age_df, date_diff_cases_age_df)
 
     generate_plots('en', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df)
+                   date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df,
+                   date_cases_age_df, date_diff_cases_age_df)
 
 
 def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_cases_percentage_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df):
+                   date_positive_cases_percentage_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df,
+                   date_cases_age_df, date_diff_cases_age_df):
     locales.set_locale(locale)
 
     # Weekly infected and cured cases plot
@@ -137,3 +142,10 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
     )
     plot.export_plot(rolling_biweekly_places_cases_plot, '%s/RollingBiWeeklyPlacesCases' % locale)
 
+    # Date cases age plot
+    date_cases_age_plot = plot.generate_cases_age_plot(date_cases_age_df)
+    plot.export_plot(date_cases_age_plot, '%s/DateCasesAge' % locale)
+
+    # Week cases age plot
+    date_week_cases_age_plot = plot.generate_week_cases_age_plot(date_diff_cases_age_df)
+    plot.export_plot(date_week_cases_age_plot, '%s/WeekCasesAge' % locale)

@@ -71,3 +71,11 @@ en:
         level_3: 'Stage 3 - between 200 and 500'
         level_4: 'Stage 4 - above 500'
         level_5: 'Above 1000'
+    cases_age_plot:
+      title: 'Disease timeline by age group'
+      x_label: 'Date'
+      y_label: 'Cases'
+    week_cases_age_plot:
+      title: 'New cases by age group'
+      x_label: 'Week'
+      y_label: 'New cases (average)'
