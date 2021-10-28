@@ -60,6 +60,14 @@ def get_date_positive_tests_df():
     return date_positive_tests_df
 
 
+def get_rolling_biweekly_places_cases_df():
+    rolling_biweekly_places_cases_df = pd.read_csv('https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/'
+                                                   'master/Bulgaria/RollingBiWeeklyPlacesCasesDataset.csv',
+                                                   parse_dates=['date'])
+
+    return rolling_biweekly_places_cases_df
+
+
 def build_rts_df(predicted_rts, start_date):
     df_index = pd.date_range(start_date, periods=len(predicted_rts), freq='D')
 

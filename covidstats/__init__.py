@@ -23,16 +23,17 @@ def main():
     week_places_cases_df = data.get_week_places_cases_df()
     date_positive_tests_df = data.get_date_positive_tests_df()
     weekly_positive_tests_df = data.build_weekly_positive_tests_df(date_positive_tests_df)
+    rolling_biweekly_places_cases_df = data.get_rolling_biweekly_places_cases_df()
 
     generate_plots('bg', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_tests_df, weekly_positive_tests_df)
+                   date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df)
 
     generate_plots('en', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_tests_df, weekly_positive_tests_df)
+                   date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df)
 
 
 def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
-                   date_positive_cases_percentage_df, weekly_positive_tests_df):
+                   date_positive_cases_percentage_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df):
     locales.set_locale(locale)
 
     # Weekly infected and cured cases plot
@@ -129,3 +130,10 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
         title=t('plots.tests_positivity_plot.title.antigen')
     )
     plot.export_plot(weekly_antigen_tests_positivity_plot, '%s/WeeklyAntigenTestsPositivity' % locale)
+
+    # Rolling biweekly places cases plot
+    rolling_biweekly_places_cases_plot = plot.generate_rolling_biweekly_places_cases_facet_plot(
+        rolling_biweekly_places_cases_df
+    )
+    plot.export_plot(rolling_biweekly_places_cases_plot, '%s/RollingBiWeeklyPlacesCases' % locale)
+

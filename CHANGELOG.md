@@ -1,3 +1,7 @@
+Version 1.3
+-----------
+    - Added rolling biweekly places cases plot.
+
 Version 1.2
 -----------
     - Fix antigen tests positivity plot data starting point.

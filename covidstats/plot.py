@@ -342,6 +342,76 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
     return date_cases_plot
 
 
+def map_cases_to_color(cases):
+    if cases < 100:
+        return 'green'
+    elif cases < 200:
+        return 'yellow'
+    elif cases < 500:
+        return 'red'
+    elif cases < 1000:
+        return 'darkred'
+    else:
+        return 'purple'
+
+
+def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweekly_places_cases_df()):
+    df_tail_sorted_by_14day_100k = df.sort_values('date').groupby('place').tail(1).sort_values('infected_avg_100k',
+                                                                                               ascending=False)
+    draw_order = df_tail_sorted_by_14day_100k.place
+    palette = list(map(map_cases_to_color, df_tail_sorted_by_14day_100k.infected_avg_100k))
+
+    week_places_cases_facets_plot = sns.relplot(
+        data=df,
+        x='date', y='infected_avg_100k', col='place', col_order=draw_order, hue='place', hue_order=draw_order,
+        kind='line', palette=palette, linewidth=4, zorder=5,
+        col_wrap=6, height=2, aspect=1.5, legend=False,
+    )
+
+    plt.subplots_adjust(top=0.9)
+    plt.suptitle(t('plots.rolling_biweekly_places_cases_facet_plot.title'), fontweight='bold')
+    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.96), xytext=(0.5, 0.96),
+                 xycoords='figure fraction', annotation_clip=False,
+                 ha='center', fontsize='small')
+
+    week_places_cases_facets_plot.set_titles('{col_name}', fontweight='bold', pad=3)
+    week_places_cases_facets_plot.set_xticklabels(rotation=90)
+
+    for place, ax in week_places_cases_facets_plot.axes_dict.items():
+        sns.lineplot(
+            data=df, x='date', y='infected_avg_100k', units='place',
+            estimator=None, color=".7", linewidth=1, ax=ax,
+        )
+
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
+
+    week_places_cases_facets_plot.set_axis_labels(
+        t('plots.rolling_biweekly_places_cases_facet_plot.x_label'),
+        t('plots.rolling_biweekly_places_cases_facet_plot.y_label')
+    )
+
+    legend_lines = [
+        Line2D([0], [0], color='green', lw=4),
+        Line2D([0], [0], color='yellow', lw=4),
+        Line2D([0], [0], color='red', lw=4),
+        Line2D([0], [0], color='darkred', lw=4),
+        Line2D([0], [0], color='purple', lw=4)
+    ]
+
+    legend_labels = [
+        t('plots.rolling_biweekly_places_cases_facet_plot.legend.level_1'),
+        t('plots.rolling_biweekly_places_cases_facet_plot.legend.level_2'),
+        t('plots.rolling_biweekly_places_cases_facet_plot.legend.level_3'),
+        t('plots.rolling_biweekly_places_cases_facet_plot.legend.level_4'),
+        t('plots.rolling_biweekly_places_cases_facet_plot.legend.level_5')
+    ]
+
+    week_places_cases_facets_plot.figure.legend(legend_lines, legend_labels, loc='lower center', ncol=2,
+                                                bbox_to_anchor=(0.5, -0.15), frameon=False)
+
+    return week_places_cases_facets_plot
+
+
 def export_plot(ax, file_name):
     ax.figure.tight_layout()
     ax.figure.savefig(file_name + '.svg', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)

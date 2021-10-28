@@ -61,3 +61,13 @@ bg:
       x_label: 'Дата'
       y_label: 'Брой тестове'
       y_right_label: 'Процент'
+    rolling_biweekly_places_cases_facet_plot:
+      title: '14-дневна заболеваемост на 100000 души по области'
+      x_label: 'Дата'
+      y_label: 'Сл. / 100 хил.'
+      legend:
+        level_1: 'Ниво 1 - <100 сл.'
+        level_2: 'Ниво 2 - между 100 и 200'
+        level_3: 'Ниво 3 - между 200 и 500'
+        level_4: 'Ниво 4 - над 500'
+        level_5: 'Над 1000'
