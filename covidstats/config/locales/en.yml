@@ -79,3 +79,13 @@ en:
       title: 'New cases by age group'
       x_label: 'Week'
       y_label: 'New cases (average)'
+    vaccination_timeline_plot:
+      title:
+        daily: 'Vaccination timeline by day'
+        weekly: 'Vaccination timeline by week'
+      x_label: 'Date'
+      y_label: 'Administered doses'
+      y_newly_vaccinated_label: 'Newly administered doses'
+      legend:
+        vaccinated: 'Cumulative administered doses'
+        newly_vaccinated: 'Newly administered doses'

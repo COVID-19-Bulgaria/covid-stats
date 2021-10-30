@@ -1,3 +1,7 @@
+Version 1.5
+-----------
+    - Added daily and weekly vaccination timeline plots
+
 Version 1.4
 -----------
     - Added date cases age and week cases age plots

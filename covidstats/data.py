@@ -36,8 +36,10 @@ def get_date_cases_df():
         'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateCasesDataset.json')
 
     for column in ['infected', 'cured', 'fatal', 'hospitalized', 'intensive_care', 'medical_staff', 'pcr_tests',
-                   'antigen_tests', 'vaccinated']:
+                   'positive_pcr_tests', 'antigen_tests', 'positive_antigen_tests', 'vaccinated']:
         date_cases_dataset[column] = date_cases_dataset[column].apply(pd.Series)
+
+    date_cases_dataset['date'] = date_cases_dataset.index
 
     return date_cases_dataset
 
@@ -63,8 +65,10 @@ def get_date_diff_cases_df():
         'https://raw.githubusercontent.com/COVID-19-Bulgaria/covid-database/master/Bulgaria/DateDiffCasesDataset.json')
 
     for column in ['infected', 'cured', 'fatal', 'hospitalized', 'intensive_care', 'medical_staff', 'pcr_tests',
-                   'antigen_tests', 'vaccinated']:
+                   'positive_pcr_tests', 'antigen_tests', 'positive_antigen_tests', 'vaccinated']:
         date_diff_cases_dataset[column] = date_diff_cases_dataset[column].apply(pd.Series)
+
+    date_diff_cases_dataset['date'] = date_diff_cases_dataset.index
 
     return date_diff_cases_dataset
 

@@ -79,3 +79,13 @@ bg:
       title: 'Нови случаи по възрастова група'
       x_label: 'Седмица'
       y_label: 'Нови случаи (средно)'
+    vaccination_timeline_plot:
+      title:
+        daily: 'Хронология на ваксинацията по дни'
+        weekly: 'Хронология на ваксинацията по седмици'
+      x_label: 'Дата'
+      y_label: 'Поставени дози'
+      y_newly_vaccinated_label: 'Новопоставени дози'
+      legend:
+        vaccinated: 'Кумулативен брой дози'
+        newly_vaccinated: 'Новопоставени дози'

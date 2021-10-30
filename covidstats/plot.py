@@ -289,7 +289,6 @@ def generate_date_cases_plot(
             t('plots.date_cases_plot.legend.fatal')
         ]
 ):
-    df['date'] = df.index
     plot_df = pd.melt(df, id_vars=['date'], value_vars=value_vars).dropna()
 
     date_cases_plot = sns.lineplot(x='date', y='value', hue='variable', hue_order=hue_order, palette=palette,
@@ -316,8 +315,8 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
     date_cases_plot = generate_date_cases_plot(df=df, value_vars=['infected', 'cured'], hue_order=['infected', 'cured'],
                                                palette=['orange', 'green'],
                                                legend=[
-                                                 t('plots.date_cases_plot.legend.infected'),
-                                                 t('plots.date_cases_plot.legend.cured'),
+                                                   t('plots.date_cases_plot.legend.infected'),
+                                                   t('plots.date_cases_plot.legend.cured'),
                                                ])
 
     lines, labels = date_cases_plot.get_legend_handles_labels()
@@ -376,7 +375,7 @@ def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweek
 
     plt.subplots_adjust(top=0.9)
     plt.suptitle(t('plots.rolling_biweekly_places_cases_facet_plot.title'), fontweight='bold')
-    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.965), xytext=(0.5, 0.965),
+    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.99), xytext=(0.5, 0.99),
                  xycoords='figure fraction', annotation_clip=False,
                  ha='center', fontsize='small')
 
@@ -465,6 +464,56 @@ def generate_week_cases_age_plot(df=data.build_date_diff_cases_age_df()):
     plot_df['date'] = plot_df.index
 
     return generate_cases_age_plot(df=plot_df, translation_key='week_cases_age_plot')
+
+
+def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
+                                       diff_df=data.get_date_diff_cases_df(),
+                                       title=t('plots.vaccination_timeline_plot.title.daily')):
+    date_cumulative_vaccinations_plot = generate_date_cases_plot(df=df, value_vars=['vaccinated'],
+                                                                 hue_order=['vaccinated'],
+                                                                 palette=['blue'],
+                                                                 legend=[
+                                                                     'plots.vaccination_timeline_plot.legend.'
+                                                                     'vaccinated',
+                                                                 ])
+
+    date_cumulative_vaccinations_plot.set_title(title, fontweight='bold')
+    set_plot_subtitle(date_cumulative_vaccinations_plot, helpers.get_generation_date_text())
+    date_cumulative_vaccinations_plot.set_xlabel(t('plots.vaccination_timeline_plot.x_label'))
+    date_cumulative_vaccinations_plot.set_ylabel(t('plots.vaccination_timeline_plot.y_label'))
+
+    date_cumulative_vaccinations_plot.yaxis.set_major_formatter(ticker.FuncFormatter(helpers.millions_formatter))
+
+    lines, labels = date_cumulative_vaccinations_plot.get_legend_handles_labels()
+    date_cumulative_vaccinations_plot.get_legend().remove()
+
+    with sns.axes_style({'axes.grid': False}):
+        common_ax = date_cumulative_vaccinations_plot.twinx()
+
+        new_vaccinations_plot_df = pd.melt(diff_df, id_vars=['date'], value_vars=['vaccinated']).dropna()
+
+        new_vaccinations_plot = sns.lineplot(data=new_vaccinations_plot_df, x='date', y='value', ax=common_ax,
+                                             color='red', label='plots.vaccination_timeline_plot.legend.'
+                                                                'newly_vaccinated')
+        new_vaccinations_plot.set_ylabel('plots.vaccination_timeline_plot.y_newly_vaccinated_label', rotation=-90,
+                                         labelpad=20)
+
+        new_vaccinations_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
+
+        week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
+        new_vaccinations_plot.xaxis.set_minor_locator(week_locator)
+
+        ticks = np.arange(new_vaccinations_plot_df['date'].min(), new_vaccinations_plot_df['date'].max(),
+                          np.timedelta64(14, 'D'), dtype='datetime64')
+        new_vaccinations_plot.set_xticks(ticks)
+
+        lines2, labels2 = common_ax.get_legend_handles_labels()
+        new_vaccinations_plot.legend(lines + lines2, [
+            'plots.vaccination_timeline_plot.legend.vaccinated',
+            'plots.vaccination_timeline_plot.legend.newly_vaccinated'
+        ])
+
+    return new_vaccinations_plot
 
 
 def export_plot(ax, file_name):

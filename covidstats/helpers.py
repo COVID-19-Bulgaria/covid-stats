@@ -51,3 +51,7 @@ def get_generation_date_text():
     date = dt.date.today()
 
     return date.strftime(t('plots.common.generation_date_subtitle'))
+
+
+def millions_formatter(x, pos):
+    return '$%1.1fM' % (x*1e-6)
