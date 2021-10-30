@@ -1,3 +1,7 @@
+Version 1.6
+----------
+    - Fix vaccinations plots translations
+
 Version 1.5
 -----------
     - Added daily and weekly vaccination timeline plots

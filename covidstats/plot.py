@@ -375,7 +375,7 @@ def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweek
 
     plt.subplots_adjust(top=0.9)
     plt.suptitle(t('plots.rolling_biweekly_places_cases_facet_plot.title'), fontweight='bold')
-    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.99), xytext=(0.5, 0.99),
+    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 1.2), xytext=(0.5, 1.2),
                  xycoords='figure fraction', annotation_clip=False,
                  ha='center', fontsize='small')
 
@@ -493,9 +493,9 @@ def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
         new_vaccinations_plot_df = pd.melt(diff_df, id_vars=['date'], value_vars=['vaccinated']).dropna()
 
         new_vaccinations_plot = sns.lineplot(data=new_vaccinations_plot_df, x='date', y='value', ax=common_ax,
-                                             color='red', label='plots.vaccination_timeline_plot.legend.'
-                                                                'newly_vaccinated')
-        new_vaccinations_plot.set_ylabel('plots.vaccination_timeline_plot.y_newly_vaccinated_label', rotation=-90,
+                                             color='red', label=t('plots.vaccination_timeline_plot.legend.'
+                                                                  'newly_vaccinated'))
+        new_vaccinations_plot.set_ylabel(t('plots.vaccination_timeline_plot.y_newly_vaccinated_label'), rotation=-90,
                                          labelpad=20)
 
         new_vaccinations_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
@@ -509,8 +509,8 @@ def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
 
         lines2, labels2 = common_ax.get_legend_handles_labels()
         new_vaccinations_plot.legend(lines + lines2, [
-            'plots.vaccination_timeline_plot.legend.vaccinated',
-            'plots.vaccination_timeline_plot.legend.newly_vaccinated'
+            t('plots.vaccination_timeline_plot.legend.vaccinated'),
+            t('plots.vaccination_timeline_plot.legend.newly_vaccinated')
         ])
 
     return new_vaccinations_plot
