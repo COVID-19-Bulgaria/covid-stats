@@ -1,14 +1,18 @@
+Version 1.7
+----------
+    - Fix figure size being altered after some plots' generation.
+
 Version 1.6
 ----------
-    - Fix vaccinations plots translations
+    - Fix vaccinations plots translations.
 
 Version 1.5
 -----------
-    - Added daily and weekly vaccination timeline plots
+    - Added daily and weekly vaccination timeline plots.
 
 Version 1.4
 -----------
-    - Added date cases age and week cases age plots
+    - Added date cases age and week cases age plots.
 
 Version 1.3
 -----------

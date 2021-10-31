@@ -14,7 +14,7 @@ en:
       y_label: 'Cases'
     active_cases_plot:
       title: 'Active cases'
-      x_label: 'Week'
+      x_label: 'Date'
       y_label: 'Cases'
     week_places_cases_plot:
       title: 'New cases by region'
@@ -34,7 +34,7 @@ en:
       y_right_label: 'Effective reproduction number, Rt'
     positive_cases_percentage_plot:
       title: 'Tests positivity'
-      x_label: 'Week'
+      x_label: 'Date'
       y_label: 'Percent'
     date_cases_plot:
       legend:
@@ -58,7 +58,7 @@ en:
         pcr: 'PCR tests positivity'
         antigen: 'Antigen tests positivity'
         pcr_antigen: 'Tests positivity (PCR + Antigen)'
-      x_label: 'Date'
+      x_label: 'Week'
       y_label: 'Tests'
       y_right_label: 'Percentage'
     rolling_biweekly_places_cases_facet_plot:
@@ -83,7 +83,9 @@ en:
       title:
         daily: 'Vaccination timeline by day'
         weekly: 'Vaccination timeline by week'
-      x_label: 'Date'
+      x_label:
+        daily: 'Date'
+        weekly: 'Week'
       y_label: 'Administered doses'
       y_newly_vaccinated_label: 'Newly administered doses'
       legend:

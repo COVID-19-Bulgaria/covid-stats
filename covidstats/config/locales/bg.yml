@@ -14,7 +14,7 @@ bg:
       y_label: 'Брой случаи'
     active_cases_plot:
       title: 'Активни случаи'
-      x_label: 'Седмица'
+      x_label: 'Дата'
       y_label: 'Брой случаи'
     week_places_cases_plot:
       title: 'Нови случаи по области'
@@ -34,7 +34,7 @@ bg:
       y_right_label: 'Моментно репродуктивно число, Rt'
     positive_cases_percentage_plot:
       title: 'Позитивност от направените тестове'
-      x_label: 'Седмица'
+      x_label: 'Дата'
       y_label: 'Процент'
     date_cases_plot:
       legend:
@@ -58,7 +58,7 @@ bg:
         pcr: 'Позитивност на PCR тестовете'
         antigen: 'Позитивност на антигенните тестове'
         pcr_antigen: 'Позитивност на направените тестове (PCR + антигенни)'
-      x_label: 'Дата'
+      x_label: 'Седмица'
       y_label: 'Брой тестове'
       y_right_label: 'Процент'
     rolling_biweekly_places_cases_facet_plot:
@@ -73,7 +73,7 @@ bg:
         level_5: 'Над 1000'
     cases_age_plot:
       title: 'Хронология на случаите по възрастова група'
-      x_label: 'Седмица'
+      x_label: 'Дата'
       y_label: 'Брой случаи'
     week_cases_age_plot:
       title: 'Нови случаи по възрастова група'
@@ -83,7 +83,9 @@ bg:
       title:
         daily: 'Хронология на ваксинацията по дни'
         weekly: 'Хронология на ваксинацията по седмици'
-      x_label: 'Дата'
+      x_label:
+        daily: 'Дата'
+        weekly: 'Седмица'
       y_label: 'Поставени дози'
       y_newly_vaccinated_label: 'Новопоставени дози'
       legend:

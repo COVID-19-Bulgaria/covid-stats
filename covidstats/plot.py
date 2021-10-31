@@ -78,7 +78,7 @@ def generate_active_cases_plot(df=data.get_active_cases_df()):
     active_cases_plot.fill_between(df.index, df['active'], alpha=0.2, color='orange')
     plt.gcf().autofmt_xdate(rotation=45)
 
-    active_cases_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
+    active_cases_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
 
     week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
     active_cases_plot.xaxis.set_minor_locator(week_locator)
@@ -210,7 +210,7 @@ def generate_weekly_14_days_prediction_plot_for_date(start_date, week_cases_df=d
 
 
 def generate_date_positive_cases_percentage_plot(df=data.get_date_positive_tests_df()):
-    df['formatted_date'] = list(map(lambda date: date.strftime('%d.%m (%V)'), df['date']))
+    df['formatted_date'] = list(map(lambda date: date.strftime('%d.%m.%Y'), df['date']))
     date_positive_cases_percentage_plot = sns.barplot(data=df, x='formatted_date', y='positive_percentage', lw=0.,
                                                       color='#4e73df', ci=None)
     date_positive_cases_percentage_plot.set_title(t('plots.positive_cases_percentage_plot.title'), fontweight='bold')
@@ -264,7 +264,7 @@ def generate_tests_positivity_plot(
                                        label=secondary_legend)
         positivity_plot.set_ylabel(t('plots.tests_positivity_plot.y_right_label'), rotation=-90, labelpad=20)
 
-        positivity_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
+        positivity_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
 
         week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
         positivity_plot.xaxis.set_minor_locator(week_locator)
@@ -375,7 +375,7 @@ def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweek
 
     plt.subplots_adjust(top=0.9)
     plt.suptitle(t('plots.rolling_biweekly_places_cases_facet_plot.title'), fontweight='bold')
-    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 1.2), xytext=(0.5, 1.2),
+    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.965), xytext=(0.5, 0.965),
                  xycoords='figure fraction', annotation_clip=False,
                  ha='center', fontsize='small')
 
@@ -426,60 +426,63 @@ def generate_cases_age_plot(
 ):
     plot_df = pd.melt(df, id_vars=['date'], value_vars=value_vars)
 
-    week_cases_age_plot = sns.lineplot(
+    cases_age_plot = sns.lineplot(
         data=plot_df,
         x='date', hue='variable', y='value',
         palette=sns.color_palette('Paired', n_colors=len(value_vars))
     )
 
-    week_cases_age_plot.set_title(t('plots.%s.title' % translation_key), fontweight='bold')
-    set_plot_subtitle(week_cases_age_plot, helpers.get_generation_date_text())
-    week_cases_age_plot.set_xlabel(t('plots.%s.x_label' % translation_key))
-    week_cases_age_plot.set_ylabel(t('plots.%s.y_label' % translation_key))
-    week_cases_age_plot.legend(labels=legend)
+    cases_age_plot.set_title(t('plots.%s.title' % translation_key), fontweight='bold')
+    set_plot_subtitle(cases_age_plot, helpers.get_generation_date_text())
+    cases_age_plot.set_xlabel(t('plots.%s.x_label' % translation_key))
+    cases_age_plot.set_ylabel(t('plots.%s.y_label' % translation_key))
+    cases_age_plot.legend(labels=legend)
     plt.gcf().autofmt_xdate(rotation=45)
 
-    week_cases_age_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
+    cases_age_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
 
     week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
-    week_cases_age_plot.xaxis.set_minor_locator(week_locator)
+    cases_age_plot.xaxis.set_minor_locator(week_locator)
 
     ticks = np.arange(plot_df['date'].min(), plot_df['date'].max(), np.timedelta64(28, 'D'), dtype='datetime64')
-    week_cases_age_plot.set_xticks(ticks)
+    cases_age_plot.set_xticks(ticks)
 
-    for line in week_cases_age_plot.lines:
+    for line in cases_age_plot.lines:
         x = line.get_xdata()
         y = line.get_ydata()
         if len(y) > 0:
-            week_cases_age_plot.annotate(text='%s (%d)' % (get_label_for_line(line), round(y[-1])), xy=(x[-1], y[-1]),
+            cases_age_plot.annotate(text='%s (%d)' % (get_label_for_line(line), round(y[-1])), xy=(x[-1], y[-1]),
                                          xytext=(35, 0), xycoords='data', textcoords='offset points',
                                          ha='left', va='center', color=line.get_color(),
                                          arrowprops={'arrowstyle': '->', 'color': line.get_color()})
 
-    return week_cases_age_plot
+    return cases_age_plot
 
 
 def generate_week_cases_age_plot(df=data.build_date_diff_cases_age_df()):
     plot_df = df.groupby(pd.Grouper(key='date', freq='W')).mean()
     plot_df['date'] = plot_df.index
 
-    return generate_cases_age_plot(df=plot_df, translation_key='week_cases_age_plot')
+    week_cases_age_plot = generate_cases_age_plot(df=plot_df, translation_key='week_cases_age_plot')
+    week_cases_age_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
+
+    return week_cases_age_plot
 
 
 def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
                                        diff_df=data.get_date_diff_cases_df(),
-                                       title=t('plots.vaccination_timeline_plot.title.daily')):
+                                       type='daily'):
     date_cumulative_vaccinations_plot = generate_date_cases_plot(df=df, value_vars=['vaccinated'],
                                                                  hue_order=['vaccinated'],
                                                                  palette=['blue'],
                                                                  legend=[
-                                                                     'plots.vaccination_timeline_plot.legend.'
-                                                                     'vaccinated',
+                                                                     t('plots.vaccination_timeline_plot.legend.'
+                                                                       'vaccinated'),
                                                                  ])
 
-    date_cumulative_vaccinations_plot.set_title(title, fontweight='bold')
+    date_cumulative_vaccinations_plot.set_title(t('plots.vaccination_timeline_plot.title.%s' % type), fontweight='bold')
     set_plot_subtitle(date_cumulative_vaccinations_plot, helpers.get_generation_date_text())
-    date_cumulative_vaccinations_plot.set_xlabel(t('plots.vaccination_timeline_plot.x_label'))
+    date_cumulative_vaccinations_plot.set_xlabel(t('plots.vaccination_timeline_plot.x_label.' % type))
     date_cumulative_vaccinations_plot.set_ylabel(t('plots.vaccination_timeline_plot.y_label'))
 
     date_cumulative_vaccinations_plot.yaxis.set_major_formatter(ticker.FuncFormatter(helpers.millions_formatter))
@@ -498,7 +501,7 @@ def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
         new_vaccinations_plot.set_ylabel(t('plots.vaccination_timeline_plot.y_newly_vaccinated_label'), rotation=-90,
                                          labelpad=20)
 
-        new_vaccinations_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m (%V)'))
+        new_vaccinations_plot.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
 
         week_locator = mdates.WeekdayLocator(byweekday=mdates.SU)
         new_vaccinations_plot.xaxis.set_minor_locator(week_locator)
@@ -520,3 +523,6 @@ def export_plot(ax, file_name):
     ax.figure.tight_layout()
     ax.figure.savefig(file_name + '.svg', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)
     ax.figure.clf()
+
+    # Reset plot adjustments e.g. figure size
+    setup_sns()
