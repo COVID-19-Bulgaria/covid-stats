@@ -519,8 +519,11 @@ def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
     return new_vaccinations_plot
 
 
-def export_plot(ax, file_name):
+def export_plot(ax, file_name, override_figure_size=True):
     ax.figure.tight_layout()
-    ax.figure.set_size_inches(12, 8)
+
+    if override_figure_size:
+        ax.figure.set_size_inches(12, 8)
+
     ax.figure.savefig(file_name + '.svg', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)
     ax.figure.clf()

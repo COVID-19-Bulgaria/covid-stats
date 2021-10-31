@@ -140,7 +140,7 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
     rolling_biweekly_places_cases_plot = plot.generate_rolling_biweekly_places_cases_facet_plot(
         rolling_biweekly_places_cases_df
     )
-    plot.export_plot(rolling_biweekly_places_cases_plot, '%s/RollingBiWeeklyPlacesCases' % locale)
+    plot.export_plot(rolling_biweekly_places_cases_plot, ('%s/RollingBiWeeklyPlacesCases' % locale), False)
 
     # Date cases age plot
     date_cases_age_plot = plot.generate_cases_age_plot(date_cases_age_df)
