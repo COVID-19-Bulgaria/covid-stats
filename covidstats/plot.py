@@ -375,8 +375,8 @@ def generate_rolling_biweekly_places_cases_facet_plot(df=data.get_rolling_biweek
 
     plt.subplots_adjust(top=0.9)
     plt.suptitle(t('plots.rolling_biweekly_places_cases_facet_plot.title'), fontweight='bold')
-    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 1.0), xytext=(0.5, 1.0),
-                 xycoords='figure fraction', annotation_clip=False,
+    plt.annotate(helpers.get_generation_date_text(), xy=(0.5, 0.965), xytext=(0.5, 0.965),
+                 xycoords='subfigure fraction', annotation_clip=False,
                  ha='center', fontsize='small')
 
     week_places_cases_facets_plot.set_titles('{col_name}', fontweight='bold', pad=3)
