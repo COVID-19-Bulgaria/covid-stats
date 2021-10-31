@@ -153,11 +153,11 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
     # Vaccination timeline by day
     date_vaccination_timeline_plot = plot.generate_vaccination_timeline_plot(df=date_cases_df,
                                                                              diff_df=date_diff_cases_df,
-                                                                             type='daily')
+                                                                             plot_type='daily')
     plot.export_plot(date_vaccination_timeline_plot, '%s/DateVaccinationTimeline' % locale)
 
     # Vaccination timeline by week
     weekly_vaccination_timeline_plot = plot.generate_vaccination_timeline_plot(df=date_cases_df,
                                                                                diff_df=week_cases_df,
-                                                                               type='weekly')
+                                                                               plot_type='weekly')
     plot.export_plot(weekly_vaccination_timeline_plot, '%s/WeeklyVaccinationTimeline' % locale)

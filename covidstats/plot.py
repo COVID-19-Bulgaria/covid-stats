@@ -471,7 +471,7 @@ def generate_week_cases_age_plot(df=data.build_date_diff_cases_age_df()):
 
 def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
                                        diff_df=data.get_date_diff_cases_df(),
-                                       type='daily'):
+                                       plot_type='daily'):
     date_cumulative_vaccinations_plot = generate_date_cases_plot(df=df, value_vars=['vaccinated'],
                                                                  hue_order=['vaccinated'],
                                                                  palette=['blue'],
@@ -480,9 +480,9 @@ def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
                                                                        'vaccinated'),
                                                                  ])
 
-    date_cumulative_vaccinations_plot.set_title(t('plots.vaccination_timeline_plot.title.%s' % type), fontweight='bold')
+    date_cumulative_vaccinations_plot.set_title(t(('plots.vaccination_timeline_plot.title.%s' % plot_type)), fontweight='bold')
     set_plot_subtitle(date_cumulative_vaccinations_plot, helpers.get_generation_date_text())
-    date_cumulative_vaccinations_plot.set_xlabel(t('plots.vaccination_timeline_plot.x_label.' % type))
+    date_cumulative_vaccinations_plot.set_xlabel(t(('plots.vaccination_timeline_plot.x_label.%s' % plot_type)))
     date_cumulative_vaccinations_plot.set_ylabel(t('plots.vaccination_timeline_plot.y_label'))
 
     date_cumulative_vaccinations_plot.yaxis.set_major_formatter(ticker.FuncFormatter(helpers.millions_formatter))
