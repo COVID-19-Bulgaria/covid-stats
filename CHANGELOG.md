@@ -1,3 +1,7 @@
+Version 1.8
+----------
+    - Add historical hospitalized and intensive care plot.
+
 Version 1.7
 ----------
     - Fix figure size being altered after some plots' generation.

@@ -83,6 +83,17 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
     historical_cases_plot = plot.generate_combined_date_cases_plot(date_cases_df)
     plot.export_plot(historical_cases_plot, '%s/HistoricalCases' % locale)
 
+    # Historical hospitalized and intensive care
+    historical_hospitalized_intensive_care_cases_plot = plot.generate_date_cases_plot(
+        df=date_cases_df, value_vars=['hospitalized', 'intensive_care'], hue_order=['hospitalized', 'intensive_care'],
+        palette=['pink', 'purple'],
+        legend=[
+            t('plots.date_cases_plot.legend.hospitalized'),
+            t('plots.date_cases_plot.legend.intensive_care'),
+        ]
+    )
+    plot.export_plot(historical_hospitalized_intensive_care_cases_plot, '%s/HistoricalHospitalizedIntensiveCareCases' % locale)
+
     # Daily positivity plot
     date_tests_positivity_plot = plot.generate_date_positive_cases_percentage_plot(
         date_positive_cases_percentage_df)

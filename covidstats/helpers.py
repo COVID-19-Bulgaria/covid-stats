@@ -54,4 +54,4 @@ def get_generation_date_text():
 
 
 def millions_formatter(x, pos):
-    return '$%1.1fM' % (x*1e-6)
+    return '%1.1fM' % (x*1e-6)
