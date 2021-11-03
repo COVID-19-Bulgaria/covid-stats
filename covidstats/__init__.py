@@ -7,14 +7,20 @@ Licensed under Attribution-NonCommercial-ShareAlike 4.0 International.
 
 from covidstats import data, plot, locales
 import datetime as dt
+import argparse
 
 from covidstats.locales import t
 
 
 def main():
-    locales.setup_i18n()
+    startup_arguments = get_startup_arguments()
 
+    locales.setup_i18n()
     plot.setup_sns()
+
+    if startup_arguments.external:
+        build_external()
+        return
 
     date_cases_df = data.get_date_cases_df()
     week_cases_df = data.get_week_cases_df()
@@ -34,6 +40,15 @@ def main():
     generate_plots('en', date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
                    date_positive_tests_df, weekly_positive_tests_df, rolling_biweekly_places_cases_df,
                    date_cases_age_df, date_diff_cases_age_df)
+
+
+def get_startup_arguments():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--external', action='store_true', default=False, dest='external',
+                        help='Generate plots with external data.')
+
+    return parser.parse_args()
 
 
 def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, active_cases_df, week_places_cases_df,
@@ -92,7 +107,8 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
             t('plots.date_cases_plot.legend.intensive_care'),
         ]
     )
-    plot.export_plot(historical_hospitalized_intensive_care_cases_plot, '%s/HistoricalHospitalizedIntensiveCareCases' % locale)
+    plot.export_plot(historical_hospitalized_intensive_care_cases_plot,
+                     '%s/HistoricalHospitalizedIntensiveCareCases' % locale)
 
     # Daily positivity plot
     date_tests_positivity_plot = plot.generate_date_positive_cases_percentage_plot(
@@ -172,3 +188,69 @@ def generate_plots(locale, date_cases_df, week_cases_df, date_diff_cases_df, act
                                                                                diff_df=week_cases_df,
                                                                                plot_type='weekly')
     plot.export_plot(weekly_vaccination_timeline_plot, '%s/WeeklyVaccinationTimeline' % locale)
+
+
+def build_external():
+    infected_vaccinated_df = data.get_infected_vaccinated_df()
+    hospitalized_vaccinated_df = data.get_hospitalized_vaccinated_df()
+    intensive_care_vaccinated_df = data.get_intensive_care_vaccinated_df()
+    fatal_vaccinated_df = data.get_fatal_vaccinated_df()
+
+    infected_vaccinated_by_age_df = data.build_vaccinated_by_age_df(infected_vaccinated_df)
+    hospitalized_vaccinated_by_age_df = data.build_vaccinated_by_age_df(hospitalized_vaccinated_df)
+    intensive_care_vaccinated_by_age_df = data.build_vaccinated_by_age_df(intensive_care_vaccinated_df)
+    fatal_vaccinated_by_age_df = data.build_vaccinated_by_age_df(fatal_vaccinated_df)
+    vaccinated_fatal_percentage_df = data.build_vaccinated_fatal_percentage_df(infected_vaccinated_by_age_df,
+                                                                               fatal_vaccinated_by_age_df)
+
+    generate_plots('bg', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
+                   intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df, vaccinated_fatal_percentage_df)
+
+    generate_plots('en', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
+                   intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df, vaccinated_fatal_percentage_df)
+
+
+def generate_external_plots(locale, infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
+                            intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
+                            vaccinated_fatal_percentage_df):
+    locales.set_locale(locale)
+
+    # Vaccinated Infected By Age
+    infected_vaccinated_by_age_plot = plot.generate_vaccinated_by_age_bar_plot(
+        infected_vaccinated_by_age_df,
+        y='infected',
+        color='orange',
+        plot_type='infected')
+    plot.export_plot(infected_vaccinated_by_age_plot, '%s/VaccinatedByAgeInfected' % locale)
+
+    # Vaccinated Hospitalized By Age
+    hospitalized_vaccinated_by_age_plot = plot.generate_vaccinated_by_age_bar_plot(
+        hospitalized_vaccinated_by_age_df,
+        y='hospitalized',
+        color='pink',
+        plot_type='hospitalized')
+    plot.export_plot(hospitalized_vaccinated_by_age_plot, '%s/VaccinatedByAgeHospitalized' % locale)
+
+    # Vaccinated Intensive Care By Age
+    intensive_care_vaccinated_by_age_plot = plot.generate_vaccinated_by_age_bar_plot(
+        intensive_care_vaccinated_by_age_df,
+        y='intensive_care',
+        color='purple',
+        plot_type='intensive_care')
+    plot.export_plot(intensive_care_vaccinated_by_age_plot, '%s/VaccinatedByAgeIntensiveCare' % locale)
+
+    # Vaccinated Fatal By Age
+    fatal_vaccinated_by_age_plot = plot.generate_vaccinated_by_age_bar_plot(
+        fatal_vaccinated_by_age_df,
+        y='fatal',
+        color='red',
+        plot_type='fatal')
+    plot.export_plot(fatal_vaccinated_by_age_plot, '%s/VaccinatedByAgeFatal' % locale)
+
+    # Vaccinated Fatal Percentage By Age
+    vaccinated_fatal_percentage_by_age_plot = plot.generate_vaccinated_by_age_bar_plot(
+        vaccinated_fatal_percentage_df,
+        y='fatal_percentage',
+        color='red',
+        plot_type='fatal_percentage')
+    plot.export_plot(vaccinated_fatal_percentage_by_age_plot, '%s/VaccinatedByAgeFatalPercentage' % locale)

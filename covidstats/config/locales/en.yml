@@ -93,3 +93,17 @@ en:
       legend:
         vaccinated: 'Cumulative administered doses'
         newly_vaccinated: 'Newly administered doses'
+    vaccinated_by_age_bar_plot:
+      title:
+        infected: 'Cumulative vaccinated infected cases by age group'
+        hospitalized: 'Cumulative vaccinated hospitalized cases by age group'
+        intensive_care: 'Cumulative vaccinated under intensive care cases by age group'
+        fatal: 'Cumulative vaccinated fatal cases by age group'
+        fatal_percentage: 'Fatal cases percentage from the vaccinated infected by age group'
+      x_label: 'Age group'
+      y_label:
+        infected: 'Infected cases'
+        hospitalized: 'Hospitalized cases'
+        intensive_care: 'Intensive care cases'
+        fatal: 'Fatal cases'
+        fatal_percentage: 'Fatal cases percentage'

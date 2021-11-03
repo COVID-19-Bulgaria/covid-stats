@@ -519,6 +519,18 @@ def generate_vaccination_timeline_plot(df=data.get_date_cases_df(),
     return new_vaccinations_plot
 
 
+def generate_vaccinated_by_age_bar_plot(df, y, color, plot_type):
+    vaccinated_by_age_bar_plot = sns.barplot(data=df, x='age', y=y, color=color, alpha=.6)
+
+    vaccinated_by_age_bar_plot.set_title(t(('plots.vaccinated_by_age_bar_plot.title.%s' % plot_type)),
+                                         fontweight='bold')
+    set_plot_subtitle(vaccinated_by_age_bar_plot, helpers.get_generation_date_text())
+    vaccinated_by_age_bar_plot.set_xlabel(t('plots.vaccinated_by_age_bar_plot.x_label'))
+    vaccinated_by_age_bar_plot.set_ylabel(t(('plots.vaccinated_by_age_bar_plot.y_label.%s' % plot_type)))
+
+    return vaccinated_by_age_bar_plot
+
+
 def export_plot(ax, file_name, override_figure_size=True):
     ax.figure.tight_layout()
 

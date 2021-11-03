@@ -88,6 +88,75 @@ def get_rolling_biweekly_places_cases_df():
     return rolling_biweekly_places_cases_df
 
 
+def get_data_egov_bg_df(resource):
+    df = pd.read_csv(resource,
+                     storage_options={
+                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.'
+                                       '36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'},
+                     parse_dates=['Дата'], cache_dates=True, encoding='utf-8')
+
+    return df
+
+
+def rename_vaccinated_df_columns(df, column_bg, column_en):
+    df.rename(columns={
+        'Дата': 'date',
+        'Ваксина': 'vaccine',
+        'Пол': 'sex',
+        'Възрастова група': 'age',
+        column_bg: column_en
+    }, inplace=True)
+
+
+def get_infected_vaccinated_df():
+    infected_vaccinated_df = get_data_egov_bg_df('https://data.egov.bg/resource/download/'
+                                                 'e9f795a8-0146-4cf0-9bd1-c0ba3d9aa124/csv')
+    rename_vaccinated_df_columns(infected_vaccinated_df, 'Брой заразени', 'infected')
+
+    return infected_vaccinated_df
+
+
+def get_hospitalized_vaccinated_df():
+    hospitalized_vaccinated_df = get_data_egov_bg_df('https://data.egov.bg/resource/download/'
+                                                     '6fb4bfb1-f586-45af-8dd2-3385499c3664/csv')
+    rename_vaccinated_df_columns(hospitalized_vaccinated_df, 'Брой хоспитализирани', 'hospitalized')
+
+    return hospitalized_vaccinated_df
+
+
+def get_intensive_care_vaccinated_df():
+    intensive_care_vaccinated_df = get_data_egov_bg_df('https://data.egov.bg/resource/download/'
+                                                       '218d49de-88a8-472a-9bb2-b2a373bd7ab4/csv')
+    rename_vaccinated_df_columns(intensive_care_vaccinated_df, 'Брой в интензивно отделение', 'intensive_care')
+
+    return intensive_care_vaccinated_df
+
+
+def get_fatal_vaccinated_df():
+    fatal_vaccinated_df = get_data_egov_bg_df('https://data.egov.bg/resource/download/'
+                                              'e6a72183-28e0-486a-b4e4-b5db8b60a900/csv')
+    rename_vaccinated_df_columns(fatal_vaccinated_df, 'Брой починали', 'fatal')
+
+    return fatal_vaccinated_df
+
+
+def build_vaccinated_by_age_df(df):
+    vaccinated_by_age_df = df[df.vaccine != '-'].groupby('age').sum()
+    vaccinated_by_age_df.reset_index(inplace=True)
+
+    return vaccinated_by_age_df
+
+
+def build_vaccinated_fatal_percentage_df(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df):
+    vaccinated_fatal_percentage_df = pd.merge(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df, on='age',
+                                              how='outer')
+    vaccinated_fatal_percentage_df['fatal'] = vaccinated_fatal_percentage_df['fatal'].fillna(0)
+    vaccinated_fatal_percentage_df['fatal_percentage'] = (vaccinated_fatal_percentage_df['fatal'] * 100) \
+        / vaccinated_fatal_percentage_df['infected']
+
+    return vaccinated_fatal_percentage_df
+
+
 def build_rts_df(predicted_rts, start_date):
     df_index = pd.date_range(start_date, periods=len(predicted_rts), freq='D')
 

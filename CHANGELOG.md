@@ -1,13 +1,22 @@
+Version 1.9
+-----------
+    - Added vaccinated infected by age group plot.
+    - Added vaccinated hospitalized by age group plot.
+    - Added vaccinated intensive care by age group plot.
+    - Added vaccinated fatal by age group plot.
+    - Added vaccinated fatal percentage by age group plot.
+    - Added program startup argument for external charts.
+
 Version 1.8
-----------
+-----------
     - Add historical hospitalized and intensive care plot.
 
 Version 1.7
-----------
+-----------
     - Fix figure size being altered after some plots' generation.
 
 Version 1.6
-----------
+-----------
     - Fix vaccinations plots translations.
 
 Version 1.5
