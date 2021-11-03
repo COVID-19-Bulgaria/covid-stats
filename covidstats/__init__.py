@@ -203,11 +203,13 @@ def build_external():
     vaccinated_fatal_percentage_df = data.build_vaccinated_fatal_percentage_df(infected_vaccinated_by_age_df,
                                                                                fatal_vaccinated_by_age_df)
 
-    generate_plots('bg', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
-                   intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df, vaccinated_fatal_percentage_df)
+    generate_external_plots('bg', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
+                            intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
+                            vaccinated_fatal_percentage_df)
 
-    generate_plots('en', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
-                   intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df, vaccinated_fatal_percentage_df)
+    generate_external_plots('en', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
+                            intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
+                            vaccinated_fatal_percentage_df)
 
 
 def generate_external_plots(locale, infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
