@@ -204,7 +204,7 @@ def build_external():
         infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df)
 
     date_diff_cases_df = data.get_date_diff_cases_df()
-    date_vaccinated_fatal_df = data.build_date_vaccinated_fatal_df(fatal_vaccinated_by_age_df)
+    date_vaccinated_fatal_df = data.build_date_vaccinated_fatal_df(fatal_vaccinated_df)
     vaccinated_fatal_percentage_df = data.build_vaccinated_fatal_percentage_df(date_vaccinated_fatal_df,
                                                                                date_diff_cases_df)
 
