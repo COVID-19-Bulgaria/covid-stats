@@ -147,12 +147,39 @@ def build_vaccinated_by_age_df(df):
     return vaccinated_by_age_df
 
 
-def build_vaccinated_fatal_percentage_df(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df):
-    vaccinated_fatal_percentage_df = pd.merge(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df, on='age',
+def build_vaccinated_by_age_fatal_percentage_df(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df):
+    vaccinated_by_age_fatal_percentage_df = pd.merge(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
+                                                     on='age',
+                                                     how='outer')
+    vaccinated_by_age_fatal_percentage_df['fatal'] = vaccinated_by_age_fatal_percentage_df['fatal'].fillna(0)
+    vaccinated_by_age_fatal_percentage_df['fatal_percentage'] = (vaccinated_by_age_fatal_percentage_df['fatal'] * 100) \
+                                                                / vaccinated_by_age_fatal_percentage_df['infected']
+
+    return vaccinated_by_age_fatal_percentage_df
+
+
+def build_date_vaccinated_fatal_df(fatal_vaccinated_df):
+    date_vaccinated_fatal_df = fatal_vaccinated_df[fatal_vaccinated_df.vaccine != '-'].groupby(
+        pd.Grouper(key='date', freq='D')).sum()
+    date_vaccinated_fatal_df.reset_index(inplace=True)
+
+    date_vaccinated_fatal_df.rename(columns={'fatal': 'fatal_vaccinated'}, inplace=True)
+
+    return date_vaccinated_fatal_df
+
+
+def build_vaccinated_fatal_percentage_df(date_vaccinated_fatal_df, date_diff_cases_df):
+    vaccinated_fatal_percentage_df = pd.merge(date_vaccinated_fatal_df, date_diff_cases_df[['fatal', 'date']],
+                                              on='date',
                                               how='outer')
-    vaccinated_fatal_percentage_df['fatal'] = vaccinated_fatal_percentage_df['fatal'].fillna(0)
-    vaccinated_fatal_percentage_df['fatal_percentage'] = (vaccinated_fatal_percentage_df['fatal'] * 100) \
-        / vaccinated_fatal_percentage_df['infected']
+    vaccinated_fatal_percentage_df = vaccinated_fatal_percentage_df[
+        vaccinated_fatal_percentage_df['date'] >= pd.to_datetime('2021-01-01')]
+    vaccinated_fatal_percentage_df['fatal_vaccinated'] = vaccinated_fatal_percentage_df['fatal_vaccinated'].fillna(0)
+    vaccinated_fatal_percentage_df.sort_values(by='date', inplace=True)
+    vaccinated_fatal_percentage_df = vaccinated_fatal_percentage_df.groupby(pd.Grouper(key='date', freq='M')).sum()
+    vaccinated_fatal_percentage_df['fatal_vaccinated_percentage'] = vaccinated_fatal_percentage_df[
+                                                                        'fatal_vaccinated'] * 100 / \
+                                                                    vaccinated_fatal_percentage_df['fatal']
 
     return vaccinated_fatal_percentage_df
 

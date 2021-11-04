@@ -1,3 +1,7 @@
+Version 1.10
+------------
+    - Added monthly vaccinated fatal percentage plot.
+
 Version 1.9
 -----------
     - Added vaccinated infected by age group plot.

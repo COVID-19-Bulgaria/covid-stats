@@ -531,6 +531,21 @@ def generate_vaccinated_by_age_bar_plot(df, y, color, plot_type):
     return vaccinated_by_age_bar_plot
 
 
+def generate_vaccinated_fatal_percentage_plot(df):
+    vaccinated_fatal_percentage_plot = sns.lineplot(data=df, x='date', y='fatal_vaccinated_percentage', linewidth=3)
+
+    vaccinated_fatal_percentage_plot.set_title(t('plots.vaccinated_fatal_percentage_plot.title'), fontweight='bold')
+    set_plot_subtitle(vaccinated_fatal_percentage_plot, helpers.get_generation_date_text())
+    vaccinated_fatal_percentage_plot.set_xlabel(t('plots.vaccinated_fatal_percentage_plot.x_label'))
+    vaccinated_fatal_percentage_plot.set_ylabel(t('plots.vaccinated_fatal_percentage_plot.y_label'))
+
+    plt.gcf().autofmt_xdate(rotation=45)
+
+    vaccinated_fatal_percentage_plot.xaxis.set_major_formatter(mdates.DateFormatter('%m.%Y'))
+
+    return vaccinated_fatal_percentage_plot
+
+
 def export_plot(ax, file_name, override_figure_size=True):
     ax.figure.tight_layout()
 

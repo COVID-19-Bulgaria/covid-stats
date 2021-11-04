@@ -200,21 +200,26 @@ def build_external():
     hospitalized_vaccinated_by_age_df = data.build_vaccinated_by_age_df(hospitalized_vaccinated_df)
     intensive_care_vaccinated_by_age_df = data.build_vaccinated_by_age_df(intensive_care_vaccinated_df)
     fatal_vaccinated_by_age_df = data.build_vaccinated_by_age_df(fatal_vaccinated_df)
-    vaccinated_fatal_percentage_df = data.build_vaccinated_fatal_percentage_df(infected_vaccinated_by_age_df,
-                                                                               fatal_vaccinated_by_age_df)
+    vaccinated_by_age_fatal_percentage_df = data.build_vaccinated_by_age_fatal_percentage_df(
+        infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df)
+
+    date_diff_cases_df = data.get_date_diff_cases_df()
+    date_vaccinated_fatal_df = data.build_date_vaccinated_fatal_df(fatal_vaccinated_by_age_df)
+    vaccinated_fatal_percentage_df = data.build_vaccinated_fatal_percentage_df(date_vaccinated_fatal_df,
+                                                                               date_diff_cases_df)
 
     generate_external_plots('bg', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
                             intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
-                            vaccinated_fatal_percentage_df)
+                            vaccinated_by_age_fatal_percentage_df, vaccinated_fatal_percentage_df)
 
     generate_external_plots('en', infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
                             intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
-                            vaccinated_fatal_percentage_df)
+                            vaccinated_by_age_fatal_percentage_df, vaccinated_fatal_percentage_df)
 
 
 def generate_external_plots(locale, infected_vaccinated_by_age_df, hospitalized_vaccinated_by_age_df,
                             intensive_care_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
-                            vaccinated_fatal_percentage_df):
+                            vaccinated_by_age_fatal_percentage_df, vaccinated_fatal_percentage_df):
     locales.set_locale(locale)
 
     # Vaccinated Infected By Age
@@ -250,9 +255,13 @@ def generate_external_plots(locale, infected_vaccinated_by_age_df, hospitalized_
     plot.export_plot(fatal_vaccinated_by_age_plot, '%s/VaccinatedByAgeFatal' % locale)
 
     # Vaccinated Fatal Percentage By Age
-    vaccinated_fatal_percentage_by_age_plot = plot.generate_vaccinated_by_age_bar_plot(
-        vaccinated_fatal_percentage_df,
+    vaccinated_by_age_fatal_percentage_plot = plot.generate_vaccinated_by_age_bar_plot(
+        vaccinated_by_age_fatal_percentage_df,
         y='fatal_percentage',
         color='red',
         plot_type='fatal_percentage')
-    plot.export_plot(vaccinated_fatal_percentage_by_age_plot, '%s/VaccinatedByAgeFatalPercentage' % locale)
+    plot.export_plot(vaccinated_by_age_fatal_percentage_plot, '%s/VaccinatedByAgeFatalPercentage' % locale)
+
+    # Monthly Vaccinated Fatal Percentage Plot
+    vaccinated_fatal_percentage_plot = plot.generate_vaccinated_fatal_percentage_plot(vaccinated_fatal_percentage_df)
+    plot.export_plot(vaccinated_fatal_percentage_plot, '%s/VaccinatedFatalPercentage' % locale)

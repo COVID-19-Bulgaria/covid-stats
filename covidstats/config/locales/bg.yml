@@ -107,3 +107,7 @@ bg:
         intensive_care: 'Брой под интензивни грижи'
         fatal: 'Брой жертви'
         fatal_percentage: 'Процент жертви'
+    vaccinated_fatal_percentage_plot:
+      title: 'Процент на ваксинираните жертви спрямо общия брой жертви за месеца'
+      x_label: 'Месец'
+      y_label: 'Процент жертви'
