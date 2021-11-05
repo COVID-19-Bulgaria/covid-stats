@@ -93,20 +93,30 @@ en:
       legend:
         vaccinated: 'Cumulative administered doses'
         newly_vaccinated: 'Newly administered doses'
-    vaccinated_by_age_bar_plot:
+    grouped_by_age_bar_plot:
       title:
-        infected: 'Cumulative vaccinated infected cases by age group'
-        hospitalized: 'Cumulative vaccinated hospitalized cases by age group'
-        intensive_care: 'Cumulative vaccinated under intensive care cases by age group'
-        fatal: 'Cumulative vaccinated fatal cases by age group'
-        fatal_percentage: 'Fatal cases percentage from the vaccinated infected by age group'
+        total:
+          infected: 'Cumulative infected cases by age group'
+          fatal: 'Cumulative fatal cases by age group'
+          fatal_percentage: 'Fatal cases percentage from the infected by age group'
+        vaccinated:
+          infected: 'Cumulative vaccinated infected cases by age group'
+          hospitalized: 'Cumulative vaccinated hospitalized cases by age group'
+          intensive_care: 'Cumulative vaccinated under intensive care cases by age group'
+          fatal: 'Cumulative vaccinated fatal cases by age group'
+          fatal_percentage: 'Fatal cases percentage from the vaccinated infected by age group'
       x_label: 'Age group'
       y_label:
-        infected: 'Infected cases'
-        hospitalized: 'Hospitalized cases'
-        intensive_care: 'Intensive care cases'
-        fatal: 'Fatal cases'
-        fatal_percentage: 'Fatal cases percentage'
+        total:
+          infected: 'Infected cases'
+          fatal: 'Fatal cases'
+          fatal_percentage: 'Fatal cases percentage'
+        vaccinated:
+          infected: 'Infected cases'
+          hospitalized: 'Hospitalized cases'
+          intensive_care: 'Intensive care cases'
+          fatal: 'Fatal cases'
+          fatal_percentage: 'Fatal cases percentage'
     vaccinated_fatal_percentage_plot:
       title: 'Percentage of vaccinated fatal cases in relation to the total number of fatal cases per month'
       x_label: 'Month'

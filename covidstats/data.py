@@ -98,6 +98,49 @@ def get_data_egov_bg_df(resource):
     return df
 
 
+def get_infected_by_age_group_df():
+    infected_by_age_group_df = get_data_egov_bg_df('https://data.egov.bg/resource/download/'
+                                                   '8f62cfcf-a979-46d4-8317-4e1ab9cbd6a8/csv')
+    infected_by_age_group_df.rename(columns={'Дата': 'date'}, inplace=True)
+
+    return infected_by_age_group_df
+
+
+def get_fatal_by_age_group_df():
+    fatal_by_age_group_df = get_data_egov_bg_df('https://data.egov.bg/resource/download/'
+                                                '18851aca-4c9d-410d-8211-0b725a70bcfd/csv')
+    rename_age_df_columns(fatal_by_age_group_df, 'Брой починали', 'fatal')
+
+    return fatal_by_age_group_df
+
+
+def rename_age_df_columns(df, column_bg, column_en):
+    df.rename(columns={
+        'Дата': 'date',
+        'Пол': 'sex',
+        'Възрастова група': 'age',
+        column_bg: column_en
+    }, inplace=True)
+
+
+def build_total_infected_by_age_group_df(df):
+    total_infected_by_age_group_df = df[df['date'] == df['date'].max()].drop(['date', '0 - 19'], axis=1)
+    total_infected_by_age_group_df = total_infected_by_age_group_df.melt(var_name='age', value_name='infected')
+    total_infected_by_age_group_df['infected'] = pd.to_numeric(total_infected_by_age_group_df['infected'])
+
+    return total_infected_by_age_group_df
+
+
+def aggregate_0_19_age_group(df):
+    age_group_0_19 = df.iloc[lambda row: row.index < df[df['age'] == '20 - 29'].index[0]].sum()[1]
+    rest_age_groups = df.iloc[lambda row: row.index >= df[df['age'] == '20 - 29'].index[0]].reset_index(drop=True)
+
+    rest_age_groups.loc[len(rest_age_groups.index)] = ['0 - 19', age_group_0_19]
+    rest_age_groups.sort_values(by='age', inplace=True, ignore_index=True)
+
+    return rest_age_groups
+
+
 def rename_vaccinated_df_columns(df, column_bg, column_en):
     df.rename(columns={
         'Дата': 'date',
@@ -140,22 +183,21 @@ def get_fatal_vaccinated_df():
     return fatal_vaccinated_df
 
 
-def build_vaccinated_by_age_df(df):
-    vaccinated_by_age_df = df[df.vaccine != '-'].groupby('age').sum()
-    vaccinated_by_age_df.reset_index(inplace=True)
+def build_grouped_by_age_df(df, filter_column):
+    grouped_by_age_df = df[df[filter_column] != '-'].groupby('age').sum()
+    grouped_by_age_df.reset_index(inplace=True)
 
-    return vaccinated_by_age_df
+    return grouped_by_age_df
 
 
-def build_vaccinated_by_age_fatal_percentage_df(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df):
-    vaccinated_by_age_fatal_percentage_df = pd.merge(infected_vaccinated_by_age_df, fatal_vaccinated_by_age_df,
-                                                     on='age',
-                                                     how='outer')
-    vaccinated_by_age_fatal_percentage_df['fatal'] = vaccinated_by_age_fatal_percentage_df['fatal'].fillna(0)
-    vaccinated_by_age_fatal_percentage_df['fatal_percentage'] = (vaccinated_by_age_fatal_percentage_df['fatal'] * 100) \
-                                                                / vaccinated_by_age_fatal_percentage_df['infected']
+def build_grouped_by_age_fatal_percentage_df(infected_by_age_df, fatal_by_age_df):
+    grouped_by_age_fatal_percentage_df = pd.merge(infected_by_age_df, fatal_by_age_df, on='age', how='outer')
+    grouped_by_age_fatal_percentage_df['fatal'] = grouped_by_age_fatal_percentage_df['fatal'].fillna(0)
+    grouped_by_age_fatal_percentage_df['fatal_percentage'] = (
+            grouped_by_age_fatal_percentage_df['fatal'] * 100 / grouped_by_age_fatal_percentage_df['infected'])\
+        .round(decimals=2)
 
-    return vaccinated_by_age_fatal_percentage_df
+    return grouped_by_age_fatal_percentage_df
 
 
 def build_date_vaccinated_fatal_df(fatal_vaccinated_df):
