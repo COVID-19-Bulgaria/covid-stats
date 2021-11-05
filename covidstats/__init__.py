@@ -201,8 +201,8 @@ def build_external():
     total_infected_by_age_group_df = data.build_total_infected_by_age_group_df(infected_by_age_group_df)
     total_fatal_by_age_group_df = data.build_grouped_by_age_df(fatal_by_age_group_df, filter_column='age')
     grouped_by_age_fatal_percentage_df = data.build_grouped_by_age_fatal_percentage_df(
-        data.aggregate_0_19_age_group(infected_by_age_group_df),
-        data.aggregate_0_19_age_group(fatal_by_age_group_df)
+        data.aggregate_0_19_age_group(total_infected_by_age_group_df),
+        data.aggregate_0_19_age_group(total_fatal_by_age_group_df)
     )
     infected_vaccinated_by_age_df = data.build_grouped_by_age_df(infected_vaccinated_df, filter_column='vaccine')
     hospitalized_vaccinated_by_age_df = data.build_grouped_by_age_df(hospitalized_vaccinated_df,
