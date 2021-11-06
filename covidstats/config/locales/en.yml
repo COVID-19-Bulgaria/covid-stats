@@ -105,6 +105,8 @@ en:
           intensive_care: 'Cumulative vaccinated under intensive care cases by age group'
           fatal: 'Cumulative vaccinated fatal cases by age group'
           fatal_percentage: 'Fatal cases percentage from the vaccinated infected by age group'
+        unvaccinated:
+          fatal_percentage: 'Fatal cases percentage from the unvaccinated infected by age group'
       x_label: 'Age group'
       y_label:
         total:
@@ -116,6 +118,8 @@ en:
           hospitalized: 'Hospitalized cases'
           intensive_care: 'Intensive care cases'
           fatal: 'Fatal cases'
+          fatal_percentage: 'Fatal cases percentage'
+        unvaccinated:
           fatal_percentage: 'Fatal cases percentage'
     vaccinated_fatal_percentage_plot:
       title: 'Percentage of vaccinated fatal cases in relation to the total number of fatal cases per month'

@@ -132,6 +132,10 @@ def build_total_infected_by_age_group_df(df):
 
 
 def aggregate_0_19_age_group(df):
+    if len(df[df['age'] == '20 - 29'].index) == 0:
+        df.loc[len(df.index)] = ['20 - 29', 0]
+        df.sort_values(by='age', inplace=True, ignore_index=True)
+
     age_group_0_19 = df.iloc[lambda row: row.index < df[df['age'] == '20 - 29'].index[0]].sum()[1]
     rest_age_groups = df.iloc[lambda row: row.index >= df[df['age'] == '20 - 29'].index[0]].reset_index(drop=True)
 

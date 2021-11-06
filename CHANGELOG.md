@@ -1,3 +1,7 @@
+Version 1.12
+------------
+    - Added unvaccinated fatal percentage by age group plot.
+
 Version 1.11
 ------------
     - Added infected by age group plot.
