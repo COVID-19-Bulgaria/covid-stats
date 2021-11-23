@@ -1,3 +1,7 @@
+Version 1.13
+------------
+    - Update the discount of the pydlm model to obtain better results.
+
 Version 1.12
 ------------
     - Added unvaccinated fatal percentage by age group plot.

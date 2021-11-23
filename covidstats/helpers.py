@@ -13,7 +13,7 @@ def estimate_rt(df):
 
 
 def predict_rt(df, start_point, number_of_predictions):
-    linear_trend = pydlm.trend(degree=1, discount=0.9, name='linear_trend')
+    linear_trend = pydlm.trend(degree=1, discount=0.7, name='linear_trend')
     simple_dlm = pydlm.dlm(df['Q0.5']) + linear_trend
     simple_dlm.fit()
 
