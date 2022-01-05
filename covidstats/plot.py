@@ -350,7 +350,7 @@ def generate_combined_date_cases_plot(df=data.get_date_cases_df()):
 def map_cases_to_color(cases):
     if cases < 100:
         return 'green'
-    elif cases < 200:
+    elif cases < 250:
         return 'yellow'
     elif cases < 500:
         return 'red'

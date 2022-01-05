@@ -1,3 +1,7 @@
+Version 1.14
+------------
+    - Update the region map coloring threshold values.
+
 Version 1.13
 ------------
     - Update the discount of the pydlm model to obtain better results.

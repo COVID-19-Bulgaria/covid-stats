@@ -69,8 +69,8 @@ en:
       y_label: 'Cases / 100k'
       legend:
         level_1: 'Stage 1 - <100 cases'
-        level_2: 'Stage 2 - between 100 and 200'
-        level_3: 'Stage 3 - between 200 and 500'
+        level_2: 'Stage 2 - between 100 and 250'
+        level_3: 'Stage 3 - between 250 and 500'
         level_4: 'Stage 4 - above 500'
         level_5: 'Above 1000'
     cases_age_plot:
